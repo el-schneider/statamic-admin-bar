@@ -14,7 +14,7 @@ This addon does:
 
 You can install this addon via Composer:
 
-``` bash
+```bash
 composer require el-schneider/statamic-admin-bar
 ```
 

@@ -3,17 +3,26 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "vite build"
+        "build": "vite build",
+        "fix": "npm run format && npm run lint",
+        "format": "prettier --write .",
+        "lint": "eslint resources/js --ext .js,.ts,.vue --ignore-path .gitignore --fix"
     },
     "devDependencies": {
+        "@vitejs/plugin-vue": "^5.2.1",
+        "@vue/eslint-config-prettier": "^9.0.0",
+        "@vue/eslint-config-typescript": "^13.0.0",
         "autoprefixer": "^10.4.20",
+        "eslint-plugin-vue": "^9.32.0",
         "laravel-vite-plugin": "^1.1.1",
         "postcss": "^8.4.49",
+        "prettier": "^3.4.2",
+        "prettier-plugin-organize-imports": "^4.1.0",
+        "prettier-plugin-tailwindcss": "^0.6.9",
         "tailwindcss": "^3.4.17",
-        "vite": "^6.0.7"
-    },
-    "dependencies": {
-        "@vitejs/plugin-vue": "^5.2.1",
-        "vue": "^3.5.13"
+        "typescript": "^5.7.3",
+        "vite": "^6.0.7",
+        "vue": "^3.5.13",
+        "vue-tsc": "^2.2.0"
     }
 }

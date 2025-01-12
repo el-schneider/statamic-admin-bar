@@ -1,28 +1,19 @@
 {
     "compilerOptions": {
-        "target": "esnext",
-        "module": "esnext",
-        "strict": true,
-        "jsx": "preserve",
-        "importHelpers": true,
-        "moduleResolution": "node",
         "allowJs": true,
-        "skipLibCheck": true,
+        "module": "ESNext",
+        "moduleResolution": "bundler",
+        "jsx": "preserve",
+        "strict": true,
+        "isolatedModules": true,
+        "target": "ESNext",
         "esModuleInterop": true,
-        "allowSyntheticDefaultImports": true,
-        "sourceMap": true,
-        "baseUrl": ".",
-        "types": [
-            "vite-plugin-vue-layouts/client",
-            "vite-plugin-pages/client",
-            "vite/client",
-            "unplugin-vue2-script-setup/types"
-        ],
+        "forceConsistentCasingInFileNames": true,
+        "noEmit": true,
+        "skipLibCheck": true,
         "paths": {
-            "@/*": ["./src*"]
-        },
-        "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
+            "@/*": ["./resources/js/*"]
+        }
     },
-    "include": ["**/*.ts", "**/*.tsx", "**/*.vue", "tests/**/*.ts", "tests/**/*.tsx"],
-    "exclude": ["node_modules", "mock", "build", "dist"]
+    "include": ["resources/js/**/*.ts", "resources/js/**/*.d.ts", "resources/js/**/*.vue"]
 }
