@@ -1,0 +1,37 @@
+{
+    "name": "el-schneider/statamic-admin-bar",
+    "autoload": {
+        "psr-4": {
+            "ElSchneider\\StatamicAdminBar\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ElSchneider\\StatamicAdminBar\\Tests\\": "tests"
+        }
+    },
+    "require": {
+        "statamic/cms": "^5.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^9.0"
+    },
+    "config": {
+        "allow-plugins": {
+            "pixelfear/composer-dist-plugin": true
+        }
+    },
+    "extra": {
+        "statamic": {
+            "name": "Statamic Admin Bar",
+            "description": "Statamic Admin Bar addon"
+        },
+        "laravel": {
+            "providers": [
+                "ElSchneider\\StatamicAdminBar\\ServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
