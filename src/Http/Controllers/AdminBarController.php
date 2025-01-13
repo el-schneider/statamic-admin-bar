@@ -12,8 +12,12 @@ class AdminBarController extends Controller
 {
     public function index(Request $request)
     {
-        // Get current URI and find matching entry
-        $uri = $request->input('uri');
+        if (!auth()->check() || !auth()->user()->can('access cp')) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+
+        $uri = $request->validate(['uri' => 'required|string'])['uri'];
         $entry = Entry::findByUri($uri);
 
         $nav = Nav::build();
@@ -36,8 +40,13 @@ class AdminBarController extends Controller
             ];
         });
 
+        $user = auth()->user()->toArray();
+        $user['preferences_url'] = route('statamic.cp.preferences.default.edit');
+
+
         return response()->json([
             'navItems' => $navItems,
+            'user' => $user,
             'currentEntry' => $entry ? [
                 'id' => $entry->id(),
                 'title' => $entry->get('title'),

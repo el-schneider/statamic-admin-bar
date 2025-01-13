@@ -17,6 +17,6 @@ class AdminBar extends Tags
         $vite = (new Vite())->useHotfile(__DIR__ . '/../../resources/dist/hot')->useBuildDirectory('vendor/statamic-admin-bar/build');
         $assets = sprintf('<script type="module" src="%s"></script>', $vite->asset('resources/js/admin-bar.ts'));
         $styles = sprintf('<link rel="stylesheet" href="%s">', $vite->asset('resources/css/admin-bar.css'));
-        return $assets . $styles . '<div id="admin-bar"></div>';
+        return $assets . $styles . '<div id="admin-bar" class="h-8 relative z-[100]"></div>';
     }
 }

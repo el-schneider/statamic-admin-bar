@@ -17,12 +17,12 @@ class ServiceProvider extends AddonServiceProvider
         'actions' => __DIR__.'/../routes/actions.php',
     ];
 
-    protected $vite = [
-        'input' => [
-            'resources/js/addon.js',
-        ],
-        'publicDirectory' => 'resources/dist',
-    ];
+    // protected $vite = [
+    //     'input' => [
+    //         'resources/js/addon.js',
+    //     ],
+    //     'publicDirectory' => 'resources/dist',
+    // ];
     public function bootAddon()
     {
 

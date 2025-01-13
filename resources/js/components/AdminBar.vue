@@ -1,5 +1,8 @@
 <template>
-    <div class="fixed top-0 left-0 right-0 bg-yellow-500 font-mono text-sm font-medium shadow-md z-50">
+    <div
+        v-if="shouldShow"
+        class="fixed top-0 left-0 right-0 bg-yellow-500 font-mono text-xs font-medium shadow-md z-50 h-8"
+    >
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex items-center gap-2">
                 <a
@@ -26,6 +29,7 @@
                     ></NavItem>
                 </div>
                 <div v-else class="py-1.5 px-3 text-gray-700">Loading...</div>
+                <User :user="data.user" />
             </div>
         </div>
     </div>
@@ -34,7 +38,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import NavItem from './NavItem.vue'
-
+import User from './User.vue'
 interface NavItemType {
     name: string
     url: string
@@ -43,11 +47,16 @@ interface NavItemType {
 }
 
 const data = ref<NavItemType[] | null>(null)
+const shouldShow = ref(false)
 
 onMounted(async () => {
     try {
         const response = await fetch(`/!/statamic-admin-bar?uri=${window.location.pathname}`)
+        if (response.status === 403) {
+            return
+        }
         data.value = await response.json()
+        shouldShow.value = true
         console.log(data.value)
     } catch (error) {
         console.error('Error fetching admin bar data:', error)
