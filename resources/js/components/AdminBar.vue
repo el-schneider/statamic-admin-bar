@@ -11,24 +11,26 @@
                 >
                     <span class="font-bold">⚡ Statamic</span>
                 </a>
-                <div class="flex items-center flex-1" v-if="data">
+                <div v-if="data?.collections" class="flex items-center flex-1">
                     <NavItem
-                        v-for="item in data.navItems"
+                        v-for="item in data.collections"
                         :key="item.name"
                         :name="item.name"
                         :url="item.url"
                         :icon="item.icon"
                     ></NavItem>
-                    <NavItem
-                        v-if="data.currentEntry"
-                        name="Edit"
-                        :title="data.currentEntry.title"
-                        :url="data.currentEntry.edit_url"
-                        :icon="data.currentEntry.icon"
-                        class="bg-green-500 ml-auto"
-                    ></NavItem>
                 </div>
                 <div v-else class="py-1.5 px-3 text-gray-700">Loading...</div>
+                <div v-if="data?.currentEntry" class="py-1.5 px-3 text-gray-700">
+                    <a
+                        :href="data.currentEntry.actions[0].url"
+                        class="flex items-center gap-2 px-4 py-2 bg-green-500 hover:bg-gray-100"
+                        :class="data.currentEntry.actions[0].class"
+                        target="_blank"
+                    >
+                        {{ data.currentEntry.actions[0].name }}
+                    </a>
+                </div>
                 <User :user="data.user" />
             </div>
         </div>
@@ -37,16 +39,11 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
+import type { ActionsData } from '../types/actionsData'
 import NavItem from './NavItem.vue'
 import User from './User.vue'
-interface NavItemType {
-    name: string
-    url: string
-    icon: string
-    section: string
-}
 
-const data = ref<NavItemType[] | null>(null)
+const data = ref<ActionsData | null>(null)
 const shouldShow = ref(false)
 
 onMounted(async () => {

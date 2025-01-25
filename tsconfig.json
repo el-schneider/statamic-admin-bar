@@ -1,4 +1,12 @@
 {
     "extends": "@vue/tsconfig/tsconfig.dom.json",
-    "include": ["resources/js/**/*.ts", "resources/js/**/*.d.ts", "resources/js/**/*.vue"]
+    "include": ["resources/js/**/*.ts", "resources/js/**/*.d.ts", "resources/js/**/*.vue"],
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["resources/js/*"],
+            "@types/*": ["./resources/js/types/*"],
+            "@types": ["./resources/js/types"]
+        }
+    }
 }

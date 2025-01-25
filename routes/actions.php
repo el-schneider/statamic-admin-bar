@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use ElSchneider\StatamicAdminBar\Http\Controllers\AdminBarController;
+use Illuminate\Support\Facades\Route;
 
-Route::get('/', [AdminBarController::class, 'index']);
+Route::get('/', AdminBarController::class);
