@@ -1,7 +1,7 @@
 interface Action {
     name: string
     url: string
-    type?: 'post'
+    type?: 'post' | 'divider'
     class?: string
 }
 

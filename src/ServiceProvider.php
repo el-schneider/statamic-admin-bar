@@ -10,7 +10,7 @@ class ServiceProvider extends AddonServiceProvider
 {
     protected $publishables = [
         __DIR__ . '/../resources/js' => 'js',
-        __DIR__ . '/../resources/css' => 'css',
+        // __DIR__ . '/../resources/css' => 'css',
     ];
 
     protected $routes = [

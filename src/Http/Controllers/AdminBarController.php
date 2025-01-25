@@ -25,30 +25,56 @@ class AdminBarController extends Controller
         }
 
         return response()->json([
+            ...$this->siteActions(),
             ...$this->collectionActions(),
             ...$this->userActions(),
             ...$this->entryActions(),
         ]);
     }
 
+    private function siteActions()
+    {
+        $startUrl = route('statamic.cp.' . config('statamic.cp.start_page'));
+
+        return [
+            'site' => [
+                ...Site::current()->toArray(),
+                'actions' => [
+                    [
+                        'name' => '⚡ Control Panel',
+                        'url' => $startUrl,
+                    ],
+                ],
+            ],
+        ];
+    }
+
     private function collectionActions()
     {
         $site = Site::current()->handle();
 
-        $collections = Collection::all()->map(fn ($collection) => [
-            'name' => $collection->title(),
-            'url' => cp_route('collections.show', $collection),
-            'actions' => [
-                [
-                    'name' => 'Index', $site,
-                    'url' => cp_route('collections.index', $collection),
+        $collections = Collection::all()->map(function ($collection) use ($site) {
+
+            $blueprints = $collection->entryBlueprints()->select('title', 'handle')->map(fn ($blueprint) => [
+                'name' => 'Create ' . $blueprint['title'],
+                'url' => cp_route('collections.entries.create', [$collection, $site, 'blueprint' => $blueprint['handle']]),
+            ]);
+
+            return [
+                'name' => $collection->title,
+                'url' => cp_route('collections.show', $collection),
+                'actions' => [
+                    ...$blueprints,
+                    [
+                        'type' => 'divider',
+                    ],
+                    [
+                        'name' => 'All Entries',
+                        'url' => cp_route('collections.show', $collection),
+                    ],
                 ],
-                [
-                    'name' => 'Create New Entry',
-                    'url' => cp_route('collections.entries.create', [$collection, $site]),
-                ],
-            ],
-        ])->toArray();
+            ];
+        })->toArray();
 
         return [
             'collections' => $collections,

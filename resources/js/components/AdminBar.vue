@@ -1,47 +1,83 @@
 <template>
-    <div
-        v-if="shouldShow"
-        class="fixed top-0 left-0 right-0 bg-yellow-500 font-mono text-xs font-medium shadow-md z-50 h-8"
-    >
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="flex items-center gap-2">
-                <a
-                    href="/cp"
-                    class="flex items-center gap-2 py-0.5 px-3 text-gray-700 hover:bg-yellow-400 transition-colors"
-                >
-                    <span class="font-bold">⚡ Statamic</span>
+    <Menubar v-if="shouldShow" class="container fixed left-0 right-0 top-0 z-50 text-xs font-medium shadow-md">
+        <!-- Home -->
+        <template v-if="data?.site">
+            <Button
+                v-for="action in data.site.actions"
+                :key="action.name"
+                variant="link"
+                :class="action.class"
+                as-child
+            >
+                <a :href="action.url" target="_blank">
+                    {{ action.name }}
                 </a>
-                <div v-if="data?.collections" class="flex items-center flex-1">
-                    <NavItem
-                        v-for="item in data.collections"
-                        :key="item.name"
-                        :name="item.name"
-                        :url="item.url"
-                        :icon="item.icon"
-                    ></NavItem>
-                </div>
-                <div v-else class="py-1.5 px-3 text-gray-700">Loading...</div>
-                <div v-if="data?.currentEntry" class="py-1.5 px-3 text-gray-700">
-                    <a
-                        :href="data.currentEntry.actions[0].url"
-                        class="flex items-center gap-2 px-4 py-2 bg-green-500 hover:bg-gray-100"
-                        :class="data.currentEntry.actions[0].class"
-                        target="_blank"
-                    >
-                        {{ data.currentEntry.actions[0].name }}
+            </Button>
+        </template>
+
+        <!-- Collections -->
+        <MenubarMenu v-if="data?.collections">
+            <MenubarTrigger>Collections</MenubarTrigger>
+            <MenubarContent>
+                <template v-for="item in data.collections" :key="item.name">
+                    <MenubarSub>
+                        <MenubarSubTrigger>{{ item.name }}</MenubarSubTrigger>
+                        <MenubarSubContent>
+                            <MenubarItem v-for="action in item.actions" :key="action.name" as-child>
+                                <a :href="action.url" :class="action.class" target="_blank">
+                                    {{ action.name }}
+                                </a>
+                            </MenubarItem>
+                        </MenubarSubContent>
+                    </MenubarSub>
+                </template>
+            </MenubarContent>
+        </MenubarMenu>
+
+        <div class="ml-auto flex">
+            <!-- Current Entry Actions -->
+            <template v-if="data?.currentEntry">
+                <Button
+                    v-for="action in data.currentEntry.actions"
+                    :key="action.name"
+                    :class="['bg-green-500 hover:bg-green-800', action.class]"
+                    as-child
+                >
+                    <a :href="action.url" target="_blank">
+                        {{ action.name }}
                     </a>
-                </div>
-                <User :user="data.user" />
-            </div>
+                </Button>
+            </template>
+
+            <!-- User Menu -->
+            <MenubarMenu v-if="data?.user" class="ml-auto">
+                <MenubarTrigger>{{ data.user.name }}</MenubarTrigger>
+                <MenubarContent align="end">
+                    <MenubarItem v-for="item in data.user.actions" :key="item.name" as-child>
+                        <a :href="item.url" target="_blank">
+                            {{ item.name }}
+                        </a>
+                    </MenubarItem>
+                </MenubarContent>
+            </MenubarMenu>
         </div>
-    </div>
+    </Menubar>
 </template>
 
 <script setup lang="ts">
+import { Button } from '@/components/ui/button'
+import {
+    Menubar,
+    MenubarContent,
+    MenubarItem,
+    MenubarMenu,
+    MenubarSub,
+    MenubarSubContent,
+    MenubarSubTrigger,
+    MenubarTrigger,
+} from '@/components/ui/menubar'
 import { onMounted, ref } from 'vue'
 import type { ActionsData } from '../types/actionsData'
-import NavItem from './NavItem.vue'
-import User from './User.vue'
 
 const data = ref<ActionsData | null>(null)
 const shouldShow = ref(false)

@@ -2,7 +2,7 @@
     <div class="relative">
         <!-- Avatar Button -->
         <button
-            class="h-8 w-8 rounded-full bg-yellow-400 flex items-center justify-center text-gray-700 hover:bg-yellow-300 transition-colors"
+            class="flex h-8 w-8 items-center justify-center rounded-full bg-yellow-400 text-gray-700 transition-colors hover:bg-yellow-300"
             @click="isOpen = !isOpen"
         >
             <span v-if="!user.avatar" class="font-medium">{{ user.initials }}</span>
@@ -10,7 +10,7 @@
         </button>
 
         <!-- Dropdown Menu -->
-        <div v-if="isOpen" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
+        <div v-if="isOpen" class="absolute right-0 z-50 mt-2 w-48 rounded-md bg-white py-1 shadow-lg">
             <ul>
                 <li v-for="action in user.actions" :key="action.name">
                     <a
