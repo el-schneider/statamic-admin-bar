@@ -6,14 +6,18 @@
         "build": "vite build",
         "fix": "npm run format && npm run lint",
         "format": "prettier --write .",
-        "lint": "eslint resources/js --ext .js,.ts,.vue --ignore-path .gitignore --fix"
+        "lint": "eslint . --fix"
     },
     "devDependencies": {
         "@vitejs/plugin-vue": "^5.2.1",
         "@vue/eslint-config-prettier": "^9.0.0",
         "@vue/eslint-config-typescript": "^13.0.0",
+        "@vue/tsconfig": "^0.7.0",
         "autoprefixer": "^10.4.20",
+        "eslint": "^8.57.1",
+        "eslint-config-prettier": "^10.0.1",
         "eslint-plugin-vue": "^9.32.0",
+        "globals": "^15.14.0",
         "laravel-vite-plugin": "^1.1.1",
         "postcss": "^8.4.49",
         "prettier": "^3.4.2",
@@ -21,6 +25,7 @@
         "prettier-plugin-tailwindcss": "^0.6.9",
         "tailwindcss": "^3.4.17",
         "typescript": "^5.7.3",
+        "typescript-eslint": "^8.21.0",
         "vite": "^6.0.7",
         "vue": "^3.5.13",
         "vue-tsc": "^2.2.0"
