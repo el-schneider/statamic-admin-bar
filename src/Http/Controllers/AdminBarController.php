@@ -30,6 +30,7 @@ class AdminBarController extends Controller
             ...$this->contentItems(),
             ...$this->userItems(),
             ...$this->entryItems(),
+            'csrfToken' => csrf_token(),
         ]);
     }
 
@@ -138,9 +139,15 @@ class AdminBarController extends Controller
             'entry' => $entry ? [
                 'id' => $entry->id(),
                 'title' => $entry->get('title'),
+                'published' => $entry->published(),
                 'editAction' => [
                     'name' => 'Edit',
                     'url' => $entry->editUrl(),
+                ],
+                'publishAction' => [
+                    'name' => 'Publish',
+                    'url' => route('statamic.admin-bar.entry.update', $entry->id()),
+                    'method' => 'PUT',
                 ],
             ] : null,
         ];

@@ -16,12 +16,20 @@
                 </MenubarContent>
             </MenubarMenu>
 
-            <div class="ml-auto flex">
+            <div class="ml-auto flex items-center gap-2">
                 <!-- Current Entry Items -->
                 <template v-if="data?.entry">
                     <Button as-child variant="ghost" style="--accent: 120, 100%, 75%; --primary-foreground: 0, 0%, 0%">
                         <a :href="data.entry.editAction.url" target="_blank"> Edit </a>
                     </Button>
+
+                    <Switch
+                        style="--primary: 120, 100%, 75%; --primary-foreground: 0, 0%, 0%"
+                        :checked="data.entry.published"
+                        @update:checked="handlePublishToggle"
+                    >
+                        Published
+                    </Switch>
                 </template>
 
                 <!-- User Menu -->
@@ -39,21 +47,38 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button'
 import { Menubar, MenubarContent, MenubarMenu, MenubarTrigger } from '@/components/ui/menubar'
+import { Switch } from '@/components/ui/switch'
+import type { Data } from '@types'
+import axios from 'axios'
 import { onMounted, ref } from 'vue'
-import type { ItemsData } from '../types/data'
 import MenuTree from './MenuTree.vue'
 
-const data = ref<ItemsData | null>(null)
+const data = ref<Data | null>(null)
 
 onMounted(async () => {
     try {
-        const response = await fetch(`/!/statamic-admin-bar?uri=${window.location.pathname}`)
-        if (!response.ok) throw new Error('Network response was not ok')
-        data.value = await response.json()
+        const response = await axios.get(`/!/statamic-admin-bar?uri=${window.location.pathname}`)
+        data.value = response.data
+        axios.defaults.headers.common['X-CSRF-TOKEN'] = data.value.csrfToken
     } catch (error) {
         console.error('Failed to fetch admin bar data:', error)
     }
 })
-</script>
 
-<style scoped></style>
+const handlePublishToggle = async () => {
+    if (!data.value?.entry) return
+
+    try {
+        const response = await axios.put(data.value.entry.publishAction.url, {
+            published: !data.value.entry.published,
+        })
+
+        if (data.value?.entry) {
+            data.value.entry.published = response.data.data.published
+            window.location.reload()
+        }
+    } catch (error) {
+        console.error('Failed to toggle publish state:', error)
+    }
+}
+</script>

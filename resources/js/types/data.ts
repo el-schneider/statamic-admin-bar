@@ -3,7 +3,7 @@ import type { Site } from './site'
 import type { Tree } from './tree'
 import type { User } from './user'
 
-interface ItemsData {
+interface Data {
     site: Site
     user: User
     content: {
@@ -11,6 +11,7 @@ interface ItemsData {
         taxonomies: Tree
     }
     entry: Entry | null
+    csrfToken: string
 }
 
-export type { ItemsData }
+export type { Data }

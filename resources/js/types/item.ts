@@ -1,7 +1,8 @@
 interface ActionItem {
     name: string
     url: string
-    type: 'post' | 'link'
+    type: 'action'
+    method?: 'put'
     class?: string
     items?: Item[]
 }

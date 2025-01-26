@@ -40,7 +40,7 @@ import {
     MenubarSubContent,
     MenubarSubTrigger,
 } from '@/components/ui/menubar'
-import type { Item } from '../types/item'
+import type { Item } from '@types'
 
 defineProps<{
     items: Item[]
