@@ -1,5 +1,5 @@
 <template>
-    <template v-if="data">
+    <div v-if="data" class="dark contents">
         <Menubar>
             <!-- Site Actions -->
             <Button variant="ghost" :class="data.site.homeAction.class" as-child>
@@ -45,7 +45,9 @@
                     <Badge
                         variant="outline"
                         title="Environment"
-                        :class="[data.environment === 'production' ? 'bg-green-500 text-white' : 'bg-yellow-300']"
+                        :class="[
+                            data.environment === 'production' ? 'bg-green-500 text-white' : 'bg-yellow-300 text-black',
+                        ]"
                         >{{ data.environment }}</Badge
                     >
                     <Badge variant="outline" title="Language">{{ data.site.lang }}</Badge>
@@ -62,7 +64,7 @@
                 </div>
             </div>
         </Menubar>
-    </template>
+    </div>
 </template>
 
 <script setup lang="ts">
