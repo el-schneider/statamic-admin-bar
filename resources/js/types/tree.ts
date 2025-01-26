@@ -1,9 +1,8 @@
 import type { Item } from './item'
 
-interface Collection {
+interface Tree {
     name: string
-    url: string
     items: Item[]
 }
 
-export type { Collection }
+export type { Tree }

@@ -10,16 +10,17 @@
 
             <!-- Collections -->
             <MenubarMenu>
-                <MenubarTrigger>Collections</MenubarTrigger>
+                <MenubarTrigger>{{ data.collections.name }}</MenubarTrigger>
                 <MenubarContent>
-                    <template v-for="collection in data.collections" :key="collection.name">
-                        <MenubarSub>
-                            <MenubarSubTrigger>{{ collection.name }}</MenubarSubTrigger>
-                            <MenubarSubContent>
-                                <MenuTree :items="collection.items" />
-                            </MenubarSubContent>
-                        </MenubarSub>
-                    </template>
+                    <MenuTree :items="data.collections.items" />
+                </MenubarContent>
+            </MenubarMenu>
+
+            <!-- Taxonomies -->
+            <MenubarMenu>
+                <MenubarTrigger>{{ data.taxonomies.name }}</MenubarTrigger>
+                <MenubarContent>
+                    <MenuTree :items="data.taxonomies.items" />
                 </MenubarContent>
             </MenubarMenu>
 
@@ -45,15 +46,7 @@
 
 <script setup lang="ts">
 import { Button } from '@/components/ui/button'
-import {
-    Menubar,
-    MenubarContent,
-    MenubarMenu,
-    MenubarSub,
-    MenubarSubContent,
-    MenubarSubTrigger,
-    MenubarTrigger,
-} from '@/components/ui/menubar'
+import { Menubar, MenubarContent, MenubarMenu, MenubarTrigger } from '@/components/ui/menubar'
 import { onMounted, ref } from 'vue'
 import type { ItemsData } from '../types/data'
 import MenuTree from './MenuTree.vue'
