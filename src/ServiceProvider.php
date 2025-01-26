@@ -8,21 +8,18 @@ use Statamic\Providers\AddonServiceProvider;
 
 class ServiceProvider extends AddonServiceProvider
 {
-    protected $publishables = [
-        __DIR__ . '/../resources/js' => 'js',
-        // __DIR__ . '/../resources/css' => 'css',
-    ];
-
     protected $routes = [
         'actions' => __DIR__ . '/../routes/actions.php',
     ];
 
-    // protected $vite = [
-    //     'input' => [
-    //         'resources/js/addon.js',
-    //     ],
-    //     'publicDirectory' => 'resources/dist',
-    // ];
+    protected $vite = [
+        'input' => [
+            'resources/js/admin-bar.ts',
+            'resources/css/admin-bar.css',
+        ],
+        'publicDirectory' => 'resources/dist',
+    ];
+
     public function bootAddon()
     {
 

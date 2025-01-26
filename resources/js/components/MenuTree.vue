@@ -5,7 +5,10 @@
 
             <template v-else-if="'items' in item && item.items?.length">
                 <MenubarSub>
-                    <MenubarSubTrigger>{{ item.name }}</MenubarSubTrigger>
+                    <MenubarSubTrigger>
+                        <Icon v-if="item.icon" :icon="item.icon" class="mr-1 h-4 w-4" />
+                        {{ item.name }}
+                    </MenubarSubTrigger>
                     <MenubarSubContent :side-offset="8">
                         <MenuTree :items="item.items" />
                     </MenubarSubContent>
@@ -17,14 +20,15 @@
                     <a
                         :href="item.url"
                         :class="[
-                            'flex w-full items-center gap-2 px-2 py-1.5 text-sm outline-none',
+                            'flex w-full items-center gap-1 text-sm outline-none',
                             'hover:bg-accent hover:text-accent-foreground',
                             item.class,
                         ]"
                         target="_blank"
                         :data-method="item.type"
                     >
-                        {{ item.name }}
+                        <Icon v-if="item.icon" :icon="item.icon" class="h-4 w-4" />
+                        <span>{{ item.name }}</span>
                     </a>
                 </MenubarItem>
             </template>
@@ -40,6 +44,7 @@ import {
     MenubarSubContent,
     MenubarSubTrigger,
 } from '@/components/ui/menubar'
+import { Icon } from '@iconify/vue'
 import type { Item } from '@types'
 
 defineProps<{

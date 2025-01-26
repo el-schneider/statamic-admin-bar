@@ -4,13 +4,17 @@
             <!-- Site Actions -->
             <Button variant="ghost" :class="data.site.homeAction.class" as-child>
                 <a :href="data.site.homeAction.url" target="_blank">
+                    <Icon icon="mdi-light:home" class="h-4 w-4" />
                     {{ data.site.homeAction.name }}
                 </a>
             </Button>
 
             <!-- Content -->
             <MenubarMenu v-for="content in data.content" :key="content.name">
-                <MenubarTrigger>{{ content.name }}</MenubarTrigger>
+                <MenubarTrigger>
+                    <Icon v-if="content.icon" :icon="content.icon" class="mr-1 h-4 w-4" />
+                    {{ content.name }}
+                </MenubarTrigger>
                 <MenubarContent>
                     <MenuTree :items="content.items" />
                 </MenubarContent>
@@ -20,7 +24,10 @@
                 <!-- Current Entry Items -->
                 <template v-if="data?.entry">
                     <Button as-child variant="ghost" style="--accent: 120, 100%, 75%; --primary-foreground: 0, 0%, 0%">
-                        <a :href="data.entry.editAction.url" target="_blank"> Edit </a>
+                        <a :href="data.entry.editAction.url" target="_blank">
+                            <Icon icon="mdi-light:pencil" class="h-4 w-4" />
+                            {{ data.entry.editAction.name }}
+                        </a>
                     </Button>
 
                     <Switch
@@ -48,6 +55,7 @@
 import { Button } from '@/components/ui/button'
 import { Menubar, MenubarContent, MenubarMenu, MenubarTrigger } from '@/components/ui/menubar'
 import { Switch } from '@/components/ui/switch'
+import { Icon } from '@iconify/vue'
 import type { Data } from '@types'
 import axios from 'axios'
 import { onMounted, ref } from 'vue'

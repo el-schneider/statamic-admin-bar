@@ -42,7 +42,7 @@ class AdminBarController extends Controller
             'site' => [
                 ...Site::current()->toArray(),
                 'homeAction' => [
-                    'name' => '⚡ Control Panel',
+                    'name' => 'Control Panel',
                     'url' => $startUrl,
                 ],
             ],
@@ -68,11 +68,13 @@ class AdminBarController extends Controller
             $blueprints = $collection->entryBlueprints()->select('title', 'handle')->map(fn ($blueprint) => [
                 'name' => 'Create ' . $blueprint['title'],
                 'url' => cp_route('collections.entries.create', [$collection, $site, 'blueprint' => $blueprint['handle']]),
+                'icon' => 'mdi-light:plus-circle',
             ]);
 
             return [
                 'name' => $collection->title,
                 'url' => cp_route('collections.show', $collection),
+                'icon' => 'mdi-light:folder',
                 'items' => [
                     ...$blueprints,
                     [
@@ -89,6 +91,7 @@ class AdminBarController extends Controller
         return [
             'collections' => [
                 'name' => __('Collections'),
+                'icon' => 'mdi-light:folder-multiple',
                 'items' => $collections,
             ],
         ];
@@ -101,14 +104,17 @@ class AdminBarController extends Controller
         return [
             'taxonomies' => [
                 'name' => __('Taxonomies'),
+                'icon' => 'mdi-light:tag',
                 'items' => Taxonomy::all()->map(function ($taxonomy) use ($site) {
                     $blueprints = $taxonomy->termBlueprints()->select('title', 'handle')->map(fn ($blueprint) => [
                         'name' => 'Create ' . $blueprint['title'],
+                        'icon' => 'mdi-light:plus-circle',
                         'url' => cp_route('taxonomies.terms.create', [$taxonomy, $site, 'blueprint' => $blueprint['handle']]),
                     ]);
 
                     return [
                         'name' => $taxonomy->title,
+                        'icon' => 'mdi-light:tag',
                         'url' => cp_route('taxonomies.show', $taxonomy),
                         'items' => [
                             ...$blueprints,
@@ -165,17 +171,19 @@ class AdminBarController extends Controller
                 ...$user,
                 'items' => [
                     [
-                        'name' => 'Preferences',
+                        'name' => __('User Preferences'),
                         'url' => route('statamic.cp.preferences.default.edit'),
+                        'icon' => 'mdi-light:settings',
                     ],
                     [
-                        'name' => 'Edit User',
+                        'name' => __('Edit User'),
                         'url' => $editUrl,
-                        'icon' => 'user',
+                        'icon' => 'mdi-light:account',
                     ],
                     [
-                        'name' => 'Logout',
+                        'name' => __('Logout'),
                         'url' => route('statamic.cp.logout'),
+                        'icon' => 'mdi-light:logout',
                         'class' => 'text-red-500',
                     ],
                 ],

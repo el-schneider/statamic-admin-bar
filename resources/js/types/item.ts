@@ -5,6 +5,7 @@ interface ActionItem {
     method?: 'put'
     class?: string
     items?: Item[]
+    icon?: string
 }
 
 interface DividerItem {
