@@ -1,4 +1,4 @@
-import type { Action } from './action'
+import type { ActionItem } from './item'
 
 interface Site {
     handle: string
@@ -10,7 +10,7 @@ interface Site {
     permalink: string
     direction: string
     attributes: any[]
-    actions: Action[]
+    homeAction: ActionItem
 }
 
 export type { Site }

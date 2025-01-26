@@ -1,12 +1,13 @@
 import type { Collection } from './collections'
-import type { CurrentEntry } from './currentEntry'
+import type { Entry } from './entry'
 import type { Site } from './site'
 import type { User } from './user'
-interface ActionsData {
+
+interface ItemsData {
     site: Site
     user: User
     collections: Collection[]
-    currentEntry: CurrentEntry | null
+    entry: Entry | null
 }
 
-export type { ActionsData }
+export type { ItemsData }

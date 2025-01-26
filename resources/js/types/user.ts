@@ -1,4 +1,4 @@
-import type { Action } from './action'
+import type { Item } from './item'
 
 interface User {
     api_url: string | null
@@ -14,7 +14,7 @@ interface User {
     roles: string[]
     super: boolean
     title: string
-    actions: Action[]
+    items: Item[]
 }
 
 export type { User }

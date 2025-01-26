@@ -25,31 +25,29 @@ class AdminBarController extends Controller
         }
 
         return response()->json([
-            ...$this->siteActions(),
-            ...$this->collectionActions(),
-            ...$this->userActions(),
-            ...$this->entryActions(),
+            ...$this->siteItems(),
+            ...$this->collectionItems(),
+            ...$this->userItems(),
+            ...$this->entryItems(),
         ]);
     }
 
-    private function siteActions()
+    private function siteItems()
     {
         $startUrl = route('statamic.cp.' . config('statamic.cp.start_page'));
 
         return [
             'site' => [
                 ...Site::current()->toArray(),
-                'actions' => [
-                    [
-                        'name' => '⚡ Control Panel',
-                        'url' => $startUrl,
-                    ],
+                'homeAction' => [
+                    'name' => '⚡ Control Panel',
+                    'url' => $startUrl,
                 ],
             ],
         ];
     }
 
-    private function collectionActions()
+    private function collectionItems()
     {
         $site = Site::current()->handle();
 
@@ -63,7 +61,7 @@ class AdminBarController extends Controller
             return [
                 'name' => $collection->title,
                 'url' => cp_route('collections.show', $collection),
-                'actions' => [
+                'items' => [
                     ...$blueprints,
                     [
                         'type' => 'divider',
@@ -81,7 +79,7 @@ class AdminBarController extends Controller
         ];
     }
 
-    private function entryActions()
+    private function entryItems()
     {
         if (! $this->uri) {
             return [];
@@ -91,20 +89,18 @@ class AdminBarController extends Controller
         $entry = Entry::findByUri($this->uri) ?? Entry::all()->first();
 
         return [
-            'currentEntry' => $entry ? [
+            'entry' => $entry ? [
                 'id' => $entry->id(),
                 'title' => $entry->get('title'),
-                'actions' => [
-                    [
-                        'name' => 'Edit',
-                        'url' => $entry->editUrl(),
-                    ],
+                'editAction' => [
+                    'name' => 'Edit',
+                    'url' => $entry->editUrl(),
                 ],
             ] : null,
         ];
     }
 
-    private function userActions()
+    private function userItems()
     {
         $user = auth()->user()->toArray();
         $editUrl = $user['edit_url'];
@@ -114,7 +110,7 @@ class AdminBarController extends Controller
         return [
             'user' => [
                 ...$user,
-                'actions' => [
+                'items' => [
                     [
                         'name' => 'Preferences',
                         'url' => route('statamic.cp.preferences.default.edit'),

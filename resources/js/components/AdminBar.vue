@@ -1,67 +1,46 @@
 <template>
-    <Menubar v-if="shouldShow" class="container fixed left-0 right-0 top-0 z-50 text-xs font-medium shadow-md">
-        <!-- Home -->
-        <template v-if="data?.site">
-            <Button
-                v-for="action in data.site.actions"
-                :key="action.name"
-                variant="link"
-                :class="action.class"
-                as-child
-            >
-                <a :href="action.url" target="_blank">
-                    {{ action.name }}
+    <template v-if="data">
+        <Menubar class="container fixed left-0 right-0 top-0 z-50 text-xs font-medium shadow-md">
+            <!-- Site Actions -->
+            <Button variant="ghost" :class="data.site.homeAction.class" as-child>
+                <a :href="data.site.homeAction.url" target="_blank">
+                    {{ data.site.homeAction.name }}
                 </a>
             </Button>
-        </template>
 
-        <!-- Collections -->
-        <MenubarMenu v-if="data?.collections">
-            <MenubarTrigger>Collections</MenubarTrigger>
-            <MenubarContent>
-                <template v-for="item in data.collections" :key="item.name">
-                    <MenubarSub>
-                        <MenubarSubTrigger>{{ item.name }}</MenubarSubTrigger>
-                        <MenubarSubContent>
-                            <MenubarItem v-for="action in item.actions" :key="action.name" as-child>
-                                <a :href="action.url" :class="action.class" target="_blank">
-                                    {{ action.name }}
-                                </a>
-                            </MenubarItem>
-                        </MenubarSubContent>
-                    </MenubarSub>
-                </template>
-            </MenubarContent>
-        </MenubarMenu>
-
-        <div class="ml-auto flex">
-            <!-- Current Entry Actions -->
-            <template v-if="data?.currentEntry">
-                <Button
-                    v-for="action in data.currentEntry.actions"
-                    :key="action.name"
-                    :class="['bg-green-500 hover:bg-green-800', action.class]"
-                    as-child
-                >
-                    <a :href="action.url" target="_blank">
-                        {{ action.name }}
-                    </a>
-                </Button>
-            </template>
-
-            <!-- User Menu -->
-            <MenubarMenu v-if="data?.user" class="ml-auto">
-                <MenubarTrigger>{{ data.user.name }}</MenubarTrigger>
-                <MenubarContent align="end">
-                    <MenubarItem v-for="item in data.user.actions" :key="item.name" as-child>
-                        <a :href="item.url" target="_blank">
-                            {{ item.name }}
-                        </a>
-                    </MenubarItem>
+            <!-- Collections -->
+            <MenubarMenu>
+                <MenubarTrigger>Collections</MenubarTrigger>
+                <MenubarContent>
+                    <template v-for="collection in data.collections" :key="collection.name">
+                        <MenubarSub>
+                            <MenubarSubTrigger>{{ collection.name }}</MenubarSubTrigger>
+                            <MenubarSubContent>
+                                <MenuTree :items="collection.items" />
+                            </MenubarSubContent>
+                        </MenubarSub>
+                    </template>
                 </MenubarContent>
             </MenubarMenu>
-        </div>
-    </Menubar>
+
+            <div class="ml-auto flex">
+                <!-- Current Entry Items -->
+                <template v-if="data?.entry">
+                    <Button as-child variant="ghost" style="--accent: 120, 100%, 75%; --primary-foreground: 0, 0%, 0%">
+                        <a :href="data.entry.editAction.url" target="_blank"> Edit </a>
+                    </Button>
+                </template>
+
+                <!-- User Menu -->
+                <MenubarMenu>
+                    <MenubarTrigger>{{ data.user.name }}</MenubarTrigger>
+                    <MenubarContent align="end">
+                        <MenuTree :items="data.user.items" />
+                    </MenubarContent>
+                </MenubarMenu>
+            </div>
+        </Menubar>
+    </template>
 </template>
 
 <script setup lang="ts">
@@ -69,7 +48,6 @@ import { Button } from '@/components/ui/button'
 import {
     Menubar,
     MenubarContent,
-    MenubarItem,
     MenubarMenu,
     MenubarSub,
     MenubarSubContent,
@@ -77,22 +55,18 @@ import {
     MenubarTrigger,
 } from '@/components/ui/menubar'
 import { onMounted, ref } from 'vue'
-import type { ActionsData } from '../types/actionsData'
+import type { ItemsData } from '../types/data'
+import MenuTree from './MenuTree.vue'
 
-const data = ref<ActionsData | null>(null)
-const shouldShow = ref(false)
+const data = ref<ItemsData | null>(null)
 
 onMounted(async () => {
     try {
         const response = await fetch(`/!/statamic-admin-bar?uri=${window.location.pathname}`)
-        if (response.status === 403) {
-            return
-        }
+        if (!response.ok) throw new Error('Network response was not ok')
         data.value = await response.json()
-        shouldShow.value = true
-        console.log(data.value)
     } catch (error) {
-        console.error('Error fetching admin bar data:', error)
+        console.error('Failed to fetch admin bar data:', error)
     }
 })
 </script>

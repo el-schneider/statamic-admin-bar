@@ -1,9 +1,9 @@
-import type { Action } from './action'
+import type { Item } from './item'
 
 interface Collection {
     name: string
     url: string
-    actions: Action[]
+    items: Item[]
 }
 
 export type { Collection }
