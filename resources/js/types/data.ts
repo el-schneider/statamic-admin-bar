@@ -6,8 +6,10 @@ import type { User } from './user'
 interface ItemsData {
     site: Site
     user: User
-    collections: Tree
-    taxonomies: Tree
+    content: {
+        collections: Tree
+        taxonomies: Tree
+    }
     entry: Entry | null
 }
 

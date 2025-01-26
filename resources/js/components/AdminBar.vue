@@ -8,19 +8,11 @@
                 </a>
             </Button>
 
-            <!-- Collections -->
-            <MenubarMenu>
-                <MenubarTrigger>{{ data.collections.name }}</MenubarTrigger>
+            <!-- Content -->
+            <MenubarMenu v-for="content in data.content" :key="content.name">
+                <MenubarTrigger>{{ content.name }}</MenubarTrigger>
                 <MenubarContent>
-                    <MenuTree :items="data.collections.items" />
-                </MenubarContent>
-            </MenubarMenu>
-
-            <!-- Taxonomies -->
-            <MenubarMenu>
-                <MenubarTrigger>{{ data.taxonomies.name }}</MenubarTrigger>
-                <MenubarContent>
-                    <MenuTree :items="data.taxonomies.items" />
+                    <MenuTree :items="content.items" />
                 </MenubarContent>
             </MenubarMenu>
 

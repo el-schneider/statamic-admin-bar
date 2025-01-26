@@ -27,8 +27,7 @@ class AdminBarController extends Controller
 
         return response()->json([
             ...$this->siteItems(),
-            ...$this->collectionItems(),
-            ...$this->taxonomyItems(),
+            ...$this->contentItems(),
             ...$this->userItems(),
             ...$this->entryItems(),
         ]);
@@ -45,6 +44,16 @@ class AdminBarController extends Controller
                     'name' => '⚡ Control Panel',
                     'url' => $startUrl,
                 ],
+            ],
+        ];
+    }
+
+    private function contentItems()
+    {
+        return [
+            'content' => [
+                ...$this->collectionItems(),
+                ...$this->taxonomyItems(),
             ],
         ];
     }
