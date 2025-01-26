@@ -14,6 +14,7 @@ const props = defineProps<MenubarCheckboxItemProps & { class?: HTMLAttributes['c
 const emits = defineEmits<MenubarCheckboxItemEmits>()
 
 const delegatedProps = computed(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { class: _, ...delegated } = props
 
     return delegated

@@ -59,7 +59,7 @@ onMounted(async () => {
     try {
         const response = await axios.get(`/!/statamic-admin-bar?uri=${window.location.pathname}`)
         data.value = response.data
-        axios.defaults.headers.common['X-CSRF-TOKEN'] = data.value.csrfToken
+        axios.defaults.headers.common['X-CSRF-TOKEN'] = data.value?.csrfToken ?? ''
     } catch (error) {
         console.error('Failed to fetch admin bar data:', error)
     }

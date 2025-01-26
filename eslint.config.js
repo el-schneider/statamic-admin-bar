@@ -5,7 +5,9 @@ import globals from 'globals'
 import typescriptEslint from 'typescript-eslint'
 
 export default typescriptEslint.config(
-    { ignores: ['*.d.ts', '**/dist'] },
+    {
+        ignores: ['*.d.ts', '**/dist', '**/vendor/**'],
+    },
     {
         extends: [
             eslint.configs.recommended,
@@ -21,8 +23,12 @@ export default typescriptEslint.config(
                 parser: typescriptEslint.parser,
             },
         },
+        rules: {},
+    },
+    {
+        files: ['**/resources/js/components/ui/**/*.{ts,vue}'],
         rules: {
-            // your rules
+            'vue/multi-word-component-names': 'off',
         },
     },
     eslintConfigPrettier,

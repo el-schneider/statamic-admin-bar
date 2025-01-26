@@ -9,7 +9,7 @@ interface Site {
     url: string
     permalink: string
     direction: string
-    attributes: any[]
+    attributes: unknown[]
     homeAction: ActionItem
 }
 
