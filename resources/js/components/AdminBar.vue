@@ -1,6 +1,6 @@
 <template>
     <template v-if="data">
-        <Menubar class="container fixed left-0 right-0 top-0 z-50 text-xs font-medium shadow-md">
+        <Menubar>
             <!-- Site Actions -->
             <Button variant="ghost" :class="data.site.homeAction.class" as-child>
                 <a :href="data.site.homeAction.url" target="_blank">
@@ -12,7 +12,7 @@
             <!-- Content -->
             <MenubarMenu v-for="content in data.content" :key="content.name">
                 <MenubarTrigger>
-                    <Icon v-if="content.icon" :icon="content.icon" class="mr-1 h-4 w-4" />
+                    <Icon v-if="content.icon" :icon="content.icon" class="h-4 w-4" />
                     {{ content.name }}
                 </MenubarTrigger>
                 <MenubarContent>
@@ -30,18 +30,23 @@
                         </a>
                     </Button>
 
-                    <Switch
-                        style="--primary: 120, 100%, 75%; --primary-foreground: 0, 0%, 0%"
-                        :checked="data.entry.published"
-                        @update:checked="handlePublishToggle"
-                    >
-                        Published
-                    </Switch>
+                    <div class="flex min-w-36 items-center gap-2 text-sm">
+                        <Switch
+                            style="--primary: 120, 100%, 75%; --primary-foreground: 0, 0%, 0%"
+                            :checked="data.entry.published"
+                            @update:checked="handlePublishToggle"
+                        >
+                        </Switch>
+                        {{ data.entry.published ? 'Published' : 'Unpublished' }}
+                    </div>
                 </template>
 
                 <!-- User Menu -->
                 <MenubarMenu>
-                    <MenubarTrigger>{{ data.user.name }}</MenubarTrigger>
+                    <MenubarTrigger>
+                        <Icon :icon="data.user.icon" class="h-4 w-4" />
+                        {{ data.user.name }}
+                    </MenubarTrigger>
                     <MenubarContent align="end">
                         <MenuTree :items="data.user.items" />
                     </MenubarContent>

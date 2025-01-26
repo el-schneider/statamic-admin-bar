@@ -6,7 +6,7 @@
             <template v-else-if="'items' in item && item.items?.length">
                 <MenubarSub>
                     <MenubarSubTrigger>
-                        <Icon v-if="item.icon" :icon="item.icon" class="mr-1 h-4 w-4" />
+                        <Icon v-if="item.icon" :icon="item.icon" class="mr-2 h-4 w-4" />
                         {{ item.name }}
                     </MenubarSubTrigger>
                     <MenubarSubContent :side-offset="8">
@@ -20,14 +20,14 @@
                     <a
                         :href="item.url"
                         :class="[
-                            'flex w-full items-center gap-1 text-sm outline-none',
+                            'flex w-full items-center text-sm outline-none',
                             'hover:bg-accent hover:text-accent-foreground',
                             item.class,
                         ]"
                         target="_blank"
                         :data-method="item.type"
                     >
-                        <Icon v-if="item.icon" :icon="item.icon" class="h-4 w-4" />
+                        <Icon v-if="item.icon" :icon="item.icon" class="mr-2 h-4 w-4" />
                         <span>{{ item.name }}</span>
                     </a>
                 </MenubarItem>

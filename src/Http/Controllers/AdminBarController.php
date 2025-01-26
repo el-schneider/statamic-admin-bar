@@ -169,6 +169,7 @@ class AdminBarController extends Controller
         return [
             'user' => [
                 ...$user,
+                'icon' => 'mdi-light:account',
                 'items' => [
                     [
                         'name' => __('User Preferences'),
@@ -178,7 +179,7 @@ class AdminBarController extends Controller
                     [
                         'name' => __('Edit User'),
                         'url' => $editUrl,
-                        'icon' => 'mdi-light:account',
+                        'icon' => 'mdi-light:pencil',
                     ],
                     [
                         'name' => __('Logout'),

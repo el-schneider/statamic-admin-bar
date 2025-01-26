@@ -8,16 +8,12 @@ use Statamic\Providers\AddonServiceProvider;
 
 class ServiceProvider extends AddonServiceProvider
 {
-    protected $routes = [
-        'actions' => __DIR__ . '/../routes/actions.php',
+    protected $publishables = [
+        __DIR__ . '/../resources/dist' => '',
     ];
 
-    protected $vite = [
-        'input' => [
-            'resources/js/admin-bar.ts',
-            'resources/css/admin-bar.css',
-        ],
-        'publicDirectory' => 'resources/dist',
+    protected $routes = [
+        'actions' => __DIR__ . '/../routes/actions.php',
     ];
 
     public function bootAddon()
