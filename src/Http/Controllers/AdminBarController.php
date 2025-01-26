@@ -5,6 +5,7 @@ namespace ElSchneider\StatamicAdminBar\Http\Controllers;
 use Illuminate\Http\Request;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
+use Statamic\Facades\GlobalSet;
 use Statamic\Facades\Site;
 use Statamic\Facades\Taxonomy;
 use Statamic\Http\Controllers\Controller;
@@ -52,10 +53,17 @@ class AdminBarController extends Controller
 
     private function contentItems()
     {
+
         return [
             'content' => [
                 ...$this->collectionItems(),
                 ...$this->taxonomyItems(),
+                ...$this->globalsItems(),
+                'assets' => [
+                    'name' => __('Assets'),
+                    'icon' => 'mdi-light:image',
+                    'url' => cp_route('assets.browse.index'),
+                ],
             ],
         ];
     }
@@ -129,6 +137,30 @@ class AdminBarController extends Controller
                         ],
                     ];
                 })->toArray(),
+            ],
+        ];
+    }
+
+    private function globalsItems()
+    {
+        $globals = GlobalSet::all()->map(function ($global) {
+
+            return [
+                'name' => $global->title(),
+                'url' => cp_route('globals.variables.edit', $global->handle()),
+                'icon' => 'mdi-light:circle',
+            ];
+        })->toArray();
+
+        if (count($globals) === 0) {
+            return [];
+        }
+
+        return [
+            'globals' => [
+                'name' => __('Globals'),
+                'icon' => 'mdi-light:circle',
+                'items' => $globals,
             ],
         ];
     }

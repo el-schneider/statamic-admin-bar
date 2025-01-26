@@ -11,13 +11,24 @@
 
             <!-- Content -->
             <MenubarMenu v-for="content in data.content" :key="content.name">
-                <MenubarTrigger>
-                    <Icon v-if="content.icon" :icon="content.icon" class="h-4 w-4" />
-                    {{ content.name }}
-                </MenubarTrigger>
-                <MenubarContent>
-                    <MenuTree :items="content.items" />
-                </MenubarContent>
+                <template v-if="content.items?.length">
+                    <MenubarTrigger>
+                        <Icon v-if="content.icon" :icon="content.icon" class="h-4 w-4" />
+                        {{ content.name }}
+                    </MenubarTrigger>
+                    <MenubarContent>
+                        <MenuTree :items="content.items" />
+                    </MenubarContent>
+                </template>
+
+                <template v-else>
+                    <Button variant="ghost" :class="content.class" as-child>
+                        <a :href="content.url" target="_blank">
+                            <Icon :icon="content.icon" class="h-4 w-4" />
+                            {{ content.name }}
+                        </a>
+                    </Button>
+                </template>
             </MenubarMenu>
 
             <div class="ml-auto flex items-center gap-2">
