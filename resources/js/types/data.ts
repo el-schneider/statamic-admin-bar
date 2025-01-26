@@ -12,6 +12,7 @@ interface Data {
     }
     entry: Entry | null
     csrfToken: string
+    environment: string
 }
 
 export type { Data }

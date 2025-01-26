@@ -26,11 +26,12 @@ class AdminBarController extends Controller
         }
 
         return response()->json([
+            'environment' => config('app.env'),
+            'csrfToken' => csrf_token(),
             ...$this->siteItems(),
             ...$this->contentItems(),
             ...$this->userItems(),
             ...$this->entryItems(),
-            'csrfToken' => csrf_token(),
         ]);
     }
 

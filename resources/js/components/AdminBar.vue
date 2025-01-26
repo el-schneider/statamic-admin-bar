@@ -41,22 +41,32 @@
                     </div>
                 </template>
 
-                <!-- User Menu -->
-                <MenubarMenu>
-                    <MenubarTrigger>
-                        <Icon :icon="data.user.icon" class="h-4 w-4" />
-                        {{ data.user.name }}
-                    </MenubarTrigger>
-                    <MenubarContent align="end">
-                        <MenuTree :items="data.user.items" />
-                    </MenubarContent>
-                </MenubarMenu>
+                <div class="flex items-center gap-2 text-sm text-muted-foreground">
+                    <Badge
+                        variant="outline"
+                        title="Environment"
+                        :class="[data.environment === 'production' ? 'bg-green-500 text-white' : 'bg-yellow-300']"
+                        >{{ data.environment }}</Badge
+                    >
+                    <Badge variant="outline" title="Language">{{ data.site.lang }}</Badge>
+                    <!-- User Menu -->
+                    <MenubarMenu>
+                        <MenubarTrigger>
+                            <Icon :icon="data.user.icon" class="h-4 w-4" />
+                            {{ data.user.name }}
+                        </MenubarTrigger>
+                        <MenubarContent align="end">
+                            <MenuTree :items="data.user.items" />
+                        </MenubarContent>
+                    </MenubarMenu>
+                </div>
             </div>
         </Menubar>
     </template>
 </template>
 
 <script setup lang="ts">
+import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Menubar, MenubarContent, MenubarMenu, MenubarTrigger } from '@/components/ui/menubar'
 import { Switch } from '@/components/ui/switch'
