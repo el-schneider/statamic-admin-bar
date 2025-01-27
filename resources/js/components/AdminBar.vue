@@ -99,6 +99,7 @@ onMounted(async () => {
         data.value = response.data
         if (import.meta.env.DEV) console.log(data.value)
         axios.defaults.headers.common['X-CSRF-TOKEN'] = data.value?.csrfToken ?? ''
+        document.getElementById('admin-bar')!.style.display = 'block'
     } catch (error) {
         console.error('Failed to fetch admin bar data:', error)
     }

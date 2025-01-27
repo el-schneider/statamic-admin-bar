@@ -18,6 +18,6 @@ class AdminBar extends Tags
         $assets = sprintf('<script type="module" src="%s"></script>', $vite->asset('resources/js/admin-bar.ts'));
         $styles = sprintf('<link rel="stylesheet" href="%s">', $vite->asset('resources/css/admin-bar.css'));
 
-        return $assets . $styles . '<div id="admin-bar" class="h-8 relative z-[100]"></div>';
+        return $assets . $styles . '<div id="admin-bar" style="height: 2rem; display: none; position: relative; z-index: 99999;"></div>';
     }
 }
