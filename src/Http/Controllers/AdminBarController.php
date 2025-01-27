@@ -27,6 +27,8 @@ class AdminBarController extends Controller
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 
+        app()->setLocale(auth()->user()->preferred_locale);
+
         return response()->json([
             'environment' => config('app.env'),
             'csrfToken' => csrf_token(),
@@ -45,7 +47,7 @@ class AdminBarController extends Controller
             'site' => [
                 ...Site::current()->toArray(),
                 'homeAction' => [
-                    'name' => 'Control Panel',
+                    'name' => __('Control Panel'),
                     'url' => $startUrl,
                 ],
             ],
@@ -138,7 +140,7 @@ class AdminBarController extends Controller
                 }
 
                 $items = $items->push([
-                    'name' => 'All Terms',
+                    'name' => __('All Terms'),
                     'url' => cp_route('taxonomies.show', $taxonomy),
                 ]);
 
@@ -279,8 +281,8 @@ class AdminBarController extends Controller
                 'icon' => 'mdi-light:account',
                 'items' => [
                     [
-                        'name' => __('User Preferences'),
-                        'url' => route('statamic.cp.preferences.default.edit'),
+                        'name' => __('Preferences'),
+                        'url' => route('statamic.cp.preferences.user.edit'),
                         'icon' => 'mdi-light:settings',
                     ],
                     [
