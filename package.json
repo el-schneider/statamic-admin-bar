@@ -4,12 +4,14 @@
     "scripts": {
         "dev": "vite",
         "build": "vite build",
-        "check": "npm run format:check && npm run lint:check",
-        "fix": "npm run format:fix && npm run lint:fix",
+        "check": "npm run format:check && npm run eslint:check && npm run pint:check",
+        "fix": "npm run format:fix && npm run eslint:fix && npm run pint:fix",
         "format:check": "prettier --check .",
         "format:fix": "prettier --write .",
-        "lint:check": "eslint .",
-        "lint:fix": "eslint . --fix"
+        "eslint:check": "eslint .",
+        "eslint:fix": "eslint . --fix",
+        "pint:check": "./vendor/bin/pint --test",
+        "pint:fix": "./vendor/bin/pint"
     },
     "devDependencies": {
         "@iconify/vue": "^4.3.0",
