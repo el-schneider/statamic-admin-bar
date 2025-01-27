@@ -1,6 +1,9 @@
 <template>
-    <div v-if="data" class="dark contents">
+    <div :class="{'dark': preferences.darkMode}" class="contents">
         <Menubar>
+            <!-- Site Switcher -->
+            <SiteSwitcher v-if="sites.length > 1" :sites="sites" />
+
             <!-- Site Actions -->
             <Button variant="ghost" :class="data.site.homeAction.class" as-child>
                 <a :href="data.site.homeAction.url" target="_blank">
@@ -9,27 +12,17 @@
                 </a>
             </Button>
 
-            <!-- Content -->
-            <MenubarMenu v-for="content in data.content" :key="content.name">
-                <template v-if="content.items?.length">
-                    <MenubarTrigger>
-                        <Icon v-if="content.icon" :icon="content.icon" class="h-4 w-4" />
-                        {{ content.name }}
-                    </MenubarTrigger>
-                    <MenubarContent>
-                        <MenuTree :items="content.items" />
-                    </MenubarContent>
-                </template>
+            <!-- Rest of the existing template... -->
 
-                <template v-else>
-                    <Button variant="ghost" :class="content.class" as-child>
-                        <a :href="content.url" target="_blank">
-                            <Icon :icon="content.icon" class="h-4 w-4" />
-                            {{ content.name }}
-                        </a>
-                    </Button>
-                </template>
-            </MenubarMenu>
+            <!-- Dark Mode Toggle -->
+            <Toggle
+                    :pressed="preferences.darkMode"
+                    @update:pressed="toggleDarkMode"
+                    variant="outline"
+                    size="sm"
+                >
+                    <Icon :icon="preferences.darkMode ? 'mdi-light:weather-night' : 'mdi-light:weather-sunny'" class="h-4 w-4" />
+                </Toggle>
 
             <div class="ml-auto flex items-center gap-2">
                 <!-- Current Entry Items -->
@@ -88,8 +81,14 @@ import { Switch } from '@/components/ui/switch'
 import { Icon } from '@iconify/vue'
 import type { Data } from '@types'
 import axios from 'axios'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import MenuTree from './MenuTree.vue'
+import { usePreferences } from '@/lib/preferences'
+import SiteSwitcher from './SiteSwitcher.vue'
+import { Toggle } from '@/components/ui/toggle'
+
+const { preferences, toggleDarkMode } = usePreferences()
+const sites = computed(() => data.value?.sites || [])
 
 const data = ref<Data | null>(null)
 
@@ -120,4 +119,5 @@ const handlePublishToggle = async () => {
         console.error('Failed to toggle publish state:', error)
     }
 }
+
 </script>

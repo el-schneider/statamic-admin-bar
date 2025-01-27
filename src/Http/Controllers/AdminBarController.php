@@ -32,6 +32,13 @@ class AdminBarController extends Controller
         return response()->json([
             'environment' => config('app.env'),
             'csrfToken' => csrf_token(),
+            'sites' => Site::all()->map(fn($site) => [
+                'handle' => $site->handle(),
+                'name' => $site->name(),
+                'lang' => $site->lang(),
+                'locale' => $site->locale(),
+                'url' => $site->url(),
+            ])->values()->toArray(),
             ...$this->siteItems(),
             ...$this->contentItems(),
             ...$this->userItems(),

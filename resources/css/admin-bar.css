@@ -75,4 +75,12 @@
     body {
         @apply bg-background text-foreground;
     }
+
+    #admin-bar {
+        @apply fixed top-0 left-0 right-0 z-[100];
+    }
+
+    body.admin-bar-visible {
+        padding-top: 2.5rem;
+    }
 }
