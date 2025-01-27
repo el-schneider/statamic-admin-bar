@@ -68,36 +68,48 @@ class AdminBarController extends Controller
         ];
     }
 
+    private function hasPermission(string $action, string $handle, string $type): bool
+    {
+        return auth()->user()->can("{$action} {$handle} {$type}");
+    }
+
     private function collectionItems()
     {
         $site = Site::current()->handle();
 
-        $collections = Collection::all()->map(function ($collection) use ($site) {
+        $collections = Collection::all()
+            ->filter(fn ($collection) => $this->hasPermission('view', $collection->handle(), 'entries'))
+            ->map(function ($collection) use ($site) {
+                $handle = $collection->handle();
 
-            $blueprints = $collection->entryBlueprints()->select('title', 'handle')->map(fn ($blueprint) => [
-                'name' => 'Create ' . $blueprint['title'],
-                'url' => cp_route('collections.entries.create', [$collection, $site, 'blueprint' => $blueprint['handle']]),
-                'icon' => 'mdi-light:plus-circle',
-            ]);
+                $blueprints = $this->hasPermission('create', $handle, 'entries')
+                    ? $collection->entryBlueprints()->select('title', 'handle')->map(fn ($blueprint) => [
+                        'name' => 'Create ' . $blueprint['title'],
+                        'url' => cp_route('collections.entries.create', [$collection, $site, 'blueprint' => $blueprint['handle']]),
+                        'icon' => 'mdi-light:plus-circle',
+                    ])
+                    : collect([]);
 
-            return [
-                'name' => $collection->title,
-                'url' => cp_route('collections.show', $collection),
-                'icon' => 'mdi-light:folder',
-                'items' => [
-                    ...$blueprints,
-                    [
-                        'type' => 'divider',
-                    ],
-                    [
-                        'name' => 'All Entries',
-                        'url' => cp_route('collections.show', $collection),
-                    ],
-                ],
-            ];
-        })->toArray();
+                $items = collect();
 
-        return [
+                if ($blueprints->isNotEmpty()) {
+                    $items = $items->merge($blueprints)->push(['type' => 'divider']);
+                }
+
+                $items = $items->push([
+                    'name' => 'All Entries',
+                    'url' => cp_route('collections.show', $collection),
+                ]);
+
+                return [
+                    'name' => $collection->title,
+                    'url' => cp_route('collections.show', $collection),
+                    'icon' => 'mdi-light:folder',
+                    'items' => $items->toArray(),
+                ];
+            })->values()->toArray();
+
+        return empty($collections) ? [] : [
             'collections' => [
                 'name' => __('Collections'),
                 'icon' => 'mdi-light:folder-multiple',
@@ -110,53 +122,60 @@ class AdminBarController extends Controller
     {
         $site = Site::current()->handle();
 
-        return [
-            'taxonomies' => [
-                'name' => __('Taxonomies'),
-                'icon' => 'mdi-light:tag',
-                'items' => Taxonomy::all()->map(function ($taxonomy) use ($site) {
-                    $blueprints = $taxonomy->termBlueprints()->select('title', 'handle')->map(fn ($blueprint) => [
+        $taxonomies = Taxonomy::all()
+            ->filter(fn ($taxonomy) => $this->hasPermission('view', $taxonomy->handle(), 'terms'))
+            ->map(function ($taxonomy) use ($site) {
+                $handle = $taxonomy->handle();
+
+                $blueprints = $this->hasPermission('create', $handle, 'terms')
+                    ? $taxonomy->termBlueprints()->select('title', 'handle')->map(fn ($blueprint) => [
                         'name' => 'Create ' . $blueprint['title'],
                         'icon' => 'mdi-light:plus-circle',
                         'url' => cp_route('taxonomies.terms.create', [$taxonomy, $site, 'blueprint' => $blueprint['handle']]),
-                    ]);
+                    ])
+                    : collect([]);
 
-                    return [
-                        'name' => $taxonomy->title,
-                        'icon' => 'mdi-light:tag',
-                        'url' => cp_route('taxonomies.show', $taxonomy),
-                        'items' => [
-                            ...$blueprints,
-                            [
-                                'type' => 'divider',
-                            ],
-                            [
-                                'name' => 'All Terms',
-                                'url' => cp_route('taxonomies.show', $taxonomy),
-                            ],
-                        ],
-                    ];
-                })->toArray(),
+                $items = collect();
+
+                if ($blueprints->isNotEmpty()) {
+                    $items = $items->merge($blueprints)->push(['type' => 'divider']);
+                }
+
+                $items = $items->push([
+                    'name' => 'All Terms',
+                    'url' => cp_route('taxonomies.show', $taxonomy),
+                ]);
+
+                return [
+                    'name' => $taxonomy->title,
+                    'icon' => 'mdi-light:tag',
+                    'url' => cp_route('taxonomies.show', $taxonomy),
+                    'items' => $items->toArray(),
+                ];
+            })->values()->toArray();
+
+        return empty($taxonomies) ? [] : [
+            'taxonomies' => [
+                'name' => __('Taxonomies'),
+                'icon' => 'mdi-light:tag',
+                'items' => $taxonomies,
             ],
         ];
     }
 
     private function globalsItems()
     {
-        $globals = GlobalSet::all()->map(function ($global) {
+        $globals = GlobalSet::all()
+            ->filter(fn ($global) => $this->hasPermission('edit', $global->handle(), 'globals'))
+            ->map(function ($global) {
+                return [
+                    'name' => $global->title(),
+                    'url' => cp_route('globals.variables.edit', $global->handle()),
+                    'icon' => 'mdi-light:circle',
+                ];
+            })->values()->toArray();
 
-            return [
-                'name' => $global->title(),
-                'url' => cp_route('globals.variables.edit', $global->handle()),
-                'icon' => 'mdi-light:circle',
-            ];
-        })->toArray();
-
-        if (count($globals) === 0) {
-            return [];
-        }
-
-        return [
+        return empty($globals) ? [] : [
             'globals' => [
                 'name' => __('Globals'),
                 'icon' => 'mdi-light:circle',
