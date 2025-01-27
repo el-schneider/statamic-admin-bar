@@ -4,8 +4,8 @@ interface Entry {
     id: string
     title: string
     published: boolean
-    editAction: ActionItem
-    publishAction: ActionItem
+    editAction?: ActionItem
+    publishAction?: ActionItem
 }
 
 export type { Entry }

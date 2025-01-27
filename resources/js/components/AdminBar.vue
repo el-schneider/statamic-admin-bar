@@ -33,14 +33,16 @@
 
             <div class="ml-auto flex items-center gap-2">
                 <!-- Current Entry Items -->
-                <template v-if="data?.entry">
+                <template v-if="data.entry?.editAction">
                     <Button as-child variant="ghost" style="--accent: 120, 100%, 75%; --primary-foreground: 0, 0%, 0%">
                         <a :href="data.entry.editAction.url" target="_blank">
                             <Icon icon="mdi-light:pencil" class="h-4 w-4" />
                             {{ data.entry.editAction.name }}
                         </a>
                     </Button>
+                </template>
 
+                <template v-if="data.entry?.publishAction">
                     <div class="flex min-w-36 items-center gap-2 text-sm">
                         <Switch
                             style="--primary: 120, 100%, 75%; --primary-foreground: 0, 0%, 0%"
@@ -95,6 +97,7 @@ onMounted(async () => {
     try {
         const response = await axios.get(`/!/statamic-admin-bar?uri=${window.location.pathname}`)
         data.value = response.data
+        if (import.meta.env.DEV) console.log(data.value)
         axios.defaults.headers.common['X-CSRF-TOKEN'] = data.value?.csrfToken ?? ''
     } catch (error) {
         console.error('Failed to fetch admin bar data:', error)
@@ -102,7 +105,7 @@ onMounted(async () => {
 })
 
 const handlePublishToggle = async () => {
-    if (!data.value?.entry) return
+    if (!data.value?.entry?.publishAction) return
 
     try {
         const response = await axios.put(data.value.entry.publishAction.url, {

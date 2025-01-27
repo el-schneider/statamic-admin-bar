@@ -8,6 +8,7 @@ use Statamic\Facades\Entry;
 use Statamic\Facades\GlobalSet;
 use Statamic\Facades\Site;
 use Statamic\Facades\Taxonomy;
+use Statamic\Facades\Term;
 use Statamic\Http\Controllers\Controller;
 
 class AdminBarController extends Controller
@@ -190,25 +191,44 @@ class AdminBarController extends Controller
             return [];
         }
 
-        // TODO: remove fallback as this is for testing
-        $entry = Entry::findByUri($this->uri) ?? Entry::all()->first();
+        // Entry::findByUri() may return a \Statamic\Structures\Pages Instance, which is why this uses a query builder
+        $entry = Entry::query()->where('uri', $this->uri)->first();
+        $term = Term::findByUri($this->uri);
 
-        return [
-            'entry' => $entry ? [
-                'id' => $entry->id(),
-                'title' => $entry->get('title'),
-                'published' => $entry->published(),
-                'editAction' => [
-                    'name' => 'Edit',
-                    'url' => $entry->editUrl(),
-                ],
-                'publishAction' => [
-                    'name' => 'Publish',
-                    'url' => route('statamic.admin-bar.entry.update', $entry->id()),
-                    'method' => 'PUT',
-                ],
-            ] : null,
+        if (! $entry && ! $term) {
+            return ['entry' => null];
+        }
+
+        $entity = $entry ?? $term;
+        $type = $entry ? 'entries' : 'terms';
+        $handle = $entry
+            ? $entity->collection()->handle()
+            : $entity->taxonomy()->handle();
+
+        $item = [
+            'entry' => [
+                'id' => $entity->id(),
+                'title' => $entity->get('title'),
+                'published' => $entity->published(),
+            ],
         ];
+
+        if (! $this->hasPermission('edit', $handle, $type)) {
+            return $item;
+        }
+
+        $item['entry']['editAction'] = [
+            'name' => __('Edit'),
+            'url' => $entity->editUrl(),
+        ];
+
+        $item['entry']['publishAction'] = [
+            'name' => __('Publish'),
+            'url' => route('statamic.admin-bar.entry.update', $entity->id()),
+            'method' => 'PUT',
+        ];
+
+        return $item;
     }
 
     private function userItems()
