@@ -54,17 +54,12 @@ class AdminBarController extends Controller
 
     private function contentItems()
     {
-
         return [
             'content' => [
                 ...$this->collectionItems(),
                 ...$this->taxonomyItems(),
                 ...$this->globalsItems(),
-                'assets' => [
-                    'name' => __('Assets'),
-                    'icon' => 'mdi-light:image',
-                    'url' => cp_route('assets.browse.index'),
-                ],
+                ...$this->assetsItems(),
             ],
         ];
     }
@@ -183,6 +178,46 @@ class AdminBarController extends Controller
                 'items' => $globals,
             ],
         ];
+    }
+
+    private function assetsItems()
+    {
+        $containers = \Statamic\Facades\AssetContainer::all()
+            ->filter(fn ($container) => $this->hasPermission('view', $container->handle(), 'assets'));
+
+        if ($containers->isEmpty()) {
+            return [];
+        }
+
+        $assetsItems =
+        [
+            'assets' => [
+                'name' => __('Assets'),
+                'icon' => 'mdi-light:image',
+            ],
+        ];
+
+        if ($containers->count() === 1) {
+            $container = $containers->first();
+            $containerUrl = cp_route('assets.browse.show', $container->handle());
+
+            $assetsItems['assets']['name'] = $container->title();
+            $assetsItems['assets']['url'] = $containerUrl;
+
+            return $assetsItems;
+        }
+
+        $items = $containers->map(function ($container) {
+            return [
+                'name' => $container->title(),
+                'icon' => 'mdi-light:folder',
+                'url' => cp_route('assets.browse.show', $container->handle()),
+            ];
+        })->values()->toArray();
+
+        $assetsItems['assets']['items'] = $items;
+
+        return $assetsItems;
     }
 
     private function entryItems()
