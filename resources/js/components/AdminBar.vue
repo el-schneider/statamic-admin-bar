@@ -4,7 +4,7 @@
             <!-- Site Actions -->
             <Button variant="ghost" :class="data.site.homeAction.class" as-child>
                 <a :href="data.site.homeAction.url" target="_blank">
-                    <Icon icon="mdi-light:home" class="h-4 w-4" />
+                    <Icon icon="mdi:home" class="h-4 w-4" />
                     {{ data.site.homeAction.name }}
                 </a>
             </Button>
@@ -36,7 +36,7 @@
                 <template v-if="data.entry?.editAction">
                     <Button as-child variant="ghost" style="--accent: 120, 100%, 75%; --primary-foreground: 0, 0%, 0%">
                         <a :href="data.entry.editAction.url" target="_blank">
-                            <Icon icon="mdi-light:pencil" class="h-4 w-4" />
+                            <Icon icon="mdi:pencil" class="h-4 w-4" />
                             {{ data.entry.editAction.name }}
                         </a>
                     </Button>
