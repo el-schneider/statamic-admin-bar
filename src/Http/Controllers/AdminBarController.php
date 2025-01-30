@@ -3,13 +3,15 @@
 namespace ElSchneider\StatamicAdminBar\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Statamic\Facades\Blink;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
 use Statamic\Facades\GlobalSet;
-use Statamic\Facades\Site;
+use Statamic\Facades\Site as SiteFacade;
 use Statamic\Facades\Taxonomy;
 use Statamic\Facades\Term;
 use Statamic\Http\Controllers\Controller;
+use Statamic\Sites\Site;
 
 class AdminBarController extends Controller
 {
@@ -39,13 +41,39 @@ class AdminBarController extends Controller
         ]);
     }
 
+    private function getCurrentSite(): Site
+    {
+        return Blink::once('adminBarCurrentSite', function () {
+            $request = request();
+            $url = $request->header('Referer') ?? $request->url();
+            $parsedUrl = parse_url($url);
+            $requestHost = $parsedUrl['host'] ?? null;
+            $requestPath = $parsedUrl['path'] ?? '/';
+
+            return SiteFacade::all()
+                ->sortByDesc(fn ($site) => strlen(parse_url($site->url())['path'] ?? '/'))
+                ->first(fn ($site) => $this->siteMatchesRequest($site, $requestHost, $requestPath))
+                ?? SiteFacade::default();
+        });
+    }
+
+    private function siteMatchesRequest(Site $site, ?string $requestHost, string $requestPath): bool
+    {
+        $siteUrl = parse_url($site->url());
+        $siteHost = $siteUrl['host'] ?? null;
+        $sitePath = $siteUrl['path'] ?? '/';
+
+        return (! $siteHost || $siteHost === $requestHost) &&
+            str_starts_with($requestPath, $sitePath);
+    }
+
     private function siteItems()
     {
         $startUrl = route('statamic.cp.' . config('statamic.cp.start_page'));
 
         return [
             'site' => [
-                ...Site::current()->toArray(),
+                ...$this->getCurrentSite()->toArray(),
                 'homeAction' => [
                     'name' => __('Control Panel'),
                     'url' => $startUrl,
@@ -73,7 +101,7 @@ class AdminBarController extends Controller
 
     private function collectionItems()
     {
-        $site = Site::current()->handle();
+        $site = $this->getCurrentSite()->handle();
 
         $collections = Collection::all()
             ->filter(fn ($collection) => $this->hasPermission('view', $collection->handle(), 'entries'))
@@ -118,7 +146,7 @@ class AdminBarController extends Controller
 
     private function taxonomyItems()
     {
-        $site = Site::current()->handle();
+        $site = $this->getCurrentSite()->handle();
 
         $taxonomies = Taxonomy::all()
             ->filter(fn ($taxonomy) => $this->hasPermission('view', $taxonomy->handle(), 'terms'))
