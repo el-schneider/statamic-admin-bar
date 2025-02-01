@@ -11,6 +11,17 @@ interface Site {
     direction: string
     attributes: unknown[]
     homeAction: ActionItem
+    sites: {
+        name: string
+        icon: string
+        items: {
+            name: string
+            url: string
+            handle: string
+            active: boolean
+            icon: string
+        }[]
+    }
 }
 
 export type { Site }

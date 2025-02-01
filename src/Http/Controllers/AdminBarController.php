@@ -15,11 +15,13 @@ use Statamic\Sites\Site;
 
 class AdminBarController extends Controller
 {
-    private string $uri;
+    private string $path;
 
     public function __invoke(Request $request)
     {
-        $this->uri = $request->validate(['uri' => 'string'])['uri'];
+        $url = $request->header('Referer') ?? $request->url();
+
+        $this->path = parse_url($url)['path'] ?? '/';
 
         if (! config('statamic.cp.enabled')) {
             return response()->json([]);
@@ -252,13 +254,9 @@ class AdminBarController extends Controller
 
     private function entryItems()
     {
-        if (! $this->uri) {
-            return [];
-        }
-
-        // Entry::findByUri() may return a \Statamic\Structures\Pages Instance, which is why this uses a query builder
-        $entry = Entry::query()->where('uri', $this->uri)->first();
-        $term = Term::findByUri($this->uri);
+        $entry = Entry::query()->where('url', $this->path)->first();
+        $term = Term::findByUri($this->path);
+        $currentSite = $this->getCurrentSite();
 
         if (! $entry && ! $term) {
             return ['entry' => null];
@@ -270,11 +268,49 @@ class AdminBarController extends Controller
             ? $entity->collection()->handle()
             : $entity->taxonomy()->handle();
 
+        // Optional publishing and expiration dates
+        $publishDate = $entity->get('publish_date') ?? null;
+        $expirationDate = $entity->get('expiration_date') ?? null;
+
+        $localizations = SiteFacade::all()->map(function ($site) use ($entity, $currentSite) {
+            $localized = $entity->in($site->handle());
+            $origin = $entity->locale() === $site->handle();
+
+            $url = null;
+            $editUrl = null;
+            $status = null;
+
+            if ($localized) {
+                $url = $localized->url();
+                $editUrl = $localized->editUrl();
+                $status = $localized->status();
+            } elseif (! $origin) {
+                $editUrl = cp_route('collections.entries.edit', [$entity->collection()->handle(), $entity->locale(), $entity->slug()]);
+            }
+
+            return [
+                'site_name' => $site->name(),
+                'locale' => $site->locale(),
+                'short_locale' => substr($site->locale(), 0, 2),
+                'title' => $site->name(),
+                'url' => $url,
+                'edit_url' => $editUrl,
+                'origin' => $origin,
+                'is_current' => $site->handle() === $currentSite->handle(),
+                'status' => $status,
+            ];
+        })->values();
+
         $item = [
             'entry' => [
                 'id' => $entity->id(),
                 'title' => $entity->get('title'),
+                'status' => __($entity->status()),
                 'published' => $entity->published(),
+                'locale' => $entity->locale(),
+                'localizations' => $localizations,
+                'publish_date' => $publishDate,
+                'expiration_date' => $expirationDate,
             ],
         ];
 

@@ -5,7 +5,6 @@
             <Button variant="ghost" :class="data.site.homeAction.class" as-child>
                 <a :href="data.site.homeAction.url" target="_blank">
                     <Icon icon="mdi:home" class="h-4 w-4" />
-                    {{ data.site.homeAction.name }}
                 </a>
             </Button>
 
@@ -34,36 +33,27 @@
             <div class="ml-auto flex items-center gap-2">
                 <!-- Current Entry Items -->
                 <template v-if="data.entry?.editAction">
-                    <Button as-child variant="ghost" style="--accent: 120, 100%, 75%; --primary-foreground: 0, 0%, 0%">
+                    <Button as-child variant="ghostSuccess">
                         <a :href="data.entry.editAction.url" target="_blank">
                             <Icon icon="mdi:pencil" class="h-4 w-4" />
                             {{ data.entry.editAction.name }}
                         </a>
                     </Button>
+                    <EntrySwitcher :localizations="data.entry.localizations" />
                 </template>
 
                 <template v-if="data.entry?.publishAction">
                     <div class="flex min-w-36 items-center gap-2 text-sm">
-                        <Switch
-                            style="--primary: 120, 100%, 75%; --primary-foreground: 0, 0%, 0%"
-                            :checked="data.entry.published"
-                            @update:checked="handlePublishToggle"
-                        >
+                        <Switch :checked="data.entry.status === 'published'" @update:checked="handlePublishToggle">
                         </Switch>
-                        {{ data.entry.published ? 'Published' : 'Unpublished' }}
+                        <StatusBadge :status="data.entry.status" />
                     </div>
                 </template>
 
                 <div class="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Badge
-                        variant="outline"
-                        title="Environment"
-                        :class="[
-                            data.environment === 'production' ? 'bg-green-500 text-white' : 'bg-yellow-300 text-black',
-                        ]"
-                        >{{ data.environment }}</Badge
-                    >
-                    <Badge variant="outline" title="Language">{{ data.site.lang }}</Badge>
+                    <Badge :variant="data.environment === 'production' ? 'success' : 'warning'" title="Environment">{{
+                        data.environment
+                    }}</Badge>
                     <!-- User Menu -->
                     <MenubarMenu>
                         <MenubarTrigger>
@@ -89,13 +79,14 @@ import { Icon } from '@iconify/vue'
 import type { Data } from '@types'
 import axios from 'axios'
 import { onMounted, ref } from 'vue'
+import EntrySwitcher from './EntrySwitcher.vue'
 import MenuTree from './MenuTree.vue'
-
+import StatusBadge from './StatusBadge.vue'
 const data = ref<Data | null>(null)
 
 onMounted(async () => {
     try {
-        const response = await axios.get(`/!/statamic-admin-bar?uri=${window.location.pathname}`)
+        const response = await axios.get(`/!/statamic-admin-bar`)
         data.value = response.data
         if (import.meta.env.DEV) console.log(data.value)
         axios.defaults.headers.common['X-CSRF-TOKEN'] = data.value?.csrfToken ?? ''
