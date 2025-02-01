@@ -1,5 +1,11 @@
 <template>
-    <div v-if="data" class="dark contents">
+    <div v-if="unauthorized" class="dark flex items-center justify-center bg-background text-sm text-foreground">
+        <p>You are no longer logged in. Want to login?</p>
+        <Button variant="link" as-child>
+            <a :href="loginUrl">Login</a>
+        </Button>
+    </div>
+    <div v-else-if="data" class="dark contents">
         <Menubar>
             <!-- Site Actions -->
             <Button variant="ghost" :class="data.site.homeAction.class" as-child>
@@ -44,16 +50,15 @@
 
                 <template v-if="data.entry?.publishAction">
                     <div class="flex min-w-36 items-center gap-2 text-sm">
-                        <Switch :checked="data.entry.status === 'published'" @update:checked="handlePublishToggle">
-                        </Switch>
+                        <Switch :checked="data.entry.status === 'published'" @update:checked="handlePublishToggle" />
                         <StatusBadge :status="data.entry.status" />
                     </div>
                 </template>
 
                 <div class="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Badge :variant="data.environment === 'production' ? 'success' : 'warning'" title="Environment">{{
-                        data.environment
-                    }}</Badge>
+                    <Badge :variant="data.environment === 'production' ? 'success' : 'warning'" title="Environment">
+                        {{ data.environment }}
+                    </Badge>
                     <!-- User Menu -->
                     <MenubarMenu>
                         <MenubarTrigger>
@@ -82,17 +87,30 @@ import { onMounted, ref } from 'vue'
 import EntrySwitcher from './EntrySwitcher.vue'
 import MenuTree from './MenuTree.vue'
 import StatusBadge from './StatusBadge.vue'
+
 const data = ref<Data | null>(null)
+const unauthorized = ref(false)
+const loginUrl = ref('')
 
 onMounted(async () => {
     try {
         const response = await axios.get(`/!/statamic-admin-bar`)
-        data.value = response.data
-        if (import.meta.env.DEV) console.log(data.value)
-        axios.defaults.headers.common['X-CSRF-TOKEN'] = data.value?.csrfToken ?? ''
-        document.getElementById('admin-bar')!.style.display = 'block'
-    } catch (error) {
-        console.error('Failed to fetch admin bar data:', error)
+        if (response.data?.login) {
+            unauthorized.value = true
+            loginUrl.value = response.data.login
+        } else {
+            data.value = response.data
+            localStorage.setItem('admin-bar-user', 'true')
+            document.getElementById('admin-bar')!.style.display = 'block'
+            axios.defaults.headers.common['X-CSRF-TOKEN'] = data.value?.csrfToken ?? ''
+        }
+    } catch (error: any) {
+        if (error.response?.status === 403 && error.response.data?.login) {
+            unauthorized.value = true
+            loginUrl.value = error.response.data.login
+        } else {
+            console.error('Failed to fetch admin bar data:', error)
+        }
     }
 })
 

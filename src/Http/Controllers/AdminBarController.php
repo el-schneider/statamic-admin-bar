@@ -20,14 +20,17 @@ class AdminBarController extends Controller
     public function __invoke(Request $request)
     {
         $url = $request->header('Referer') ?? $request->url();
-
         $this->path = parse_url($url)['path'] ?? '/';
 
         if (! config('statamic.cp.enabled')) {
             return response()->json([]);
         }
 
-        if (! auth()->check() || ! auth()->user()->can('access cp')) {
+        if (! auth()->check()) {
+            return response()->json(['login' => route('statamic.cp.login')], 403);
+        }
+
+        if (! auth()->user()->can('access cp')) {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 
