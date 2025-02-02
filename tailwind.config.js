@@ -4,8 +4,8 @@ const animate = require('tailwindcss-animate')
 module.exports = {
     darkMode: ['class'],
     safelist: ['dark'],
-    prefix: '',
     important: true,
+    prefix: '',
     content: [
         './src/**/*.php',
         './resources/**/*.blade.php',
