@@ -8,6 +8,8 @@
 - [ ] Add mobile menu
 - [ ] Intelligently "unhide" admin bar for previous users, based on localStorage
 - [x] Admin bar to respect users language preference
+- [ ] Add "position" preference
+- [ ] Add "color scheme" preference
 
 ## Investigate
 

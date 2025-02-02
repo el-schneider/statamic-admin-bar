@@ -16,6 +16,9 @@ interface User {
     super: boolean
     title: string
     items: Item[]
+    preferences: {
+        darkMode: boolean
+    }
 }
 
 export type { User }

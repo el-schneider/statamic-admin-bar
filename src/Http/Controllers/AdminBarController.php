@@ -7,6 +7,7 @@ use Statamic\Facades\Blink;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
 use Statamic\Facades\GlobalSet;
+use Statamic\Facades\Preference;
 use Statamic\Facades\Site as SiteFacade;
 use Statamic\Facades\Taxonomy;
 use Statamic\Facades\Term;
@@ -30,8 +31,12 @@ class AdminBarController extends Controller
             return response()->json(['login' => route('statamic.cp.login')], 403);
         }
 
-        if (! auth()->user()->can('access cp')) {
+        if (! auth()->user()->can('access cp') || ! auth()->user()->can('view admin bar')) {
             return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        if (! Preference::get('admin_bar_enabled', true)) {
+            return response()->json(['disabled' => true]);
         }
 
         app()->setLocale(auth()->user()->preferred_locale);
@@ -335,6 +340,16 @@ class AdminBarController extends Controller
         return $item;
     }
 
+    private function getPreferences()
+    {
+        $statamic_theme = Preference::get('theme', 'dark');
+        $dark_mode = Preference::get('admin_bar_dark_mode', $statamic_theme);
+
+        return [
+            'darkMode' => $dark_mode === 'dark',
+        ];
+    }
+
     private function userItems()
     {
         $user = auth()->user()->toArray();
@@ -342,10 +357,13 @@ class AdminBarController extends Controller
 
         unset($user['edit_url']);
 
+        $preferences = $this->getPreferences();
+
         return [
             'user' => [
                 ...$user,
                 'icon' => 'mdi:account',
+                'preferences' => $preferences,
                 'items' => [
                     [
                         'name' => __('Preferences'),
@@ -361,7 +379,7 @@ class AdminBarController extends Controller
                         'name' => __('Logout'),
                         'url' => route('statamic.cp.logout'),
                         'icon' => 'mdi:logout',
-                        'class' => 'text-red-500',
+                        'class' => 'text-destructive',
                     ],
                 ],
             ],

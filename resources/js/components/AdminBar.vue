@@ -1,11 +1,17 @@
 <template>
-    <div v-if="unauthorized" class="dark flex items-center justify-center bg-background text-sm text-foreground">
+    <div
+        v-if="unauthorized"
+        :class="[
+            preferences.darkMode && 'dark',
+            'flex items-center justify-center bg-background text-sm text-foreground',
+        ]"
+    >
         <p>You are no longer logged in. Want to login?</p>
         <Button variant="link" as-child>
             <a :href="loginUrl">Login</a>
         </Button>
     </div>
-    <div v-else-if="data" class="dark contents">
+    <div v-else-if="data" :class="[preferences.darkMode && 'dark', 'contents']">
         <Menubar>
             <!-- Site Actions -->
             <Button variant="ghost" :class="data.site.homeAction.class" as-child>
@@ -80,8 +86,9 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Menubar, MenubarContent, MenubarMenu, MenubarTrigger } from '@/components/ui/menubar'
 import { Switch } from '@/components/ui/switch'
+import { usePreferences } from '@/lib/preferences'
 import { Icon } from '@iconify/vue'
-import type { Data } from '@types'
+import type { AdminBarResponse, Data } from '@types'
 import axios from 'axios'
 import { onMounted, ref } from 'vue'
 import EntrySwitcher from './EntrySwitcher.vue'
@@ -92,17 +99,24 @@ const data = ref<Data | null>(null)
 const unauthorized = ref(false)
 const loginUrl = ref('')
 
+const { preferences, syncPreferences } = usePreferences()
+
 onMounted(async () => {
     try {
-        const response = await axios.get(`/!/statamic-admin-bar`)
-        if (response.data?.login) {
+        const response = await axios.get<AdminBarResponse>(`/!/statamic-admin-bar`)
+
+        if ('login' in response.data) {
             unauthorized.value = true
             loginUrl.value = response.data.login
+        } else if ('disabled' in response.data && response.data.disabled) {
+            localStorage.removeItem('admin-bar-user')
+            document.getElementById('admin-bar')!.style.display = 'none'
         } else {
-            data.value = response.data
+            data.value = response.data as Data
             localStorage.setItem('admin-bar-user', 'true')
             document.getElementById('admin-bar')!.style.display = 'block'
-            axios.defaults.headers.common['X-CSRF-TOKEN'] = data.value?.csrfToken ?? ''
+            axios.defaults.headers.common['X-CSRF-TOKEN'] = data.value.csrfToken
+            syncPreferences(response.data.user.preferences)
         }
     } catch (error: any) {
         if (error.response?.status === 403 && error.response.data?.login) {
