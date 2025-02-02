@@ -43,7 +43,7 @@ class AdminBarController extends Controller
 
         return response()->json([
             'environment' => config('app.env'),
-            'csrfToken' => csrf_token(),
+            'csrf_token' => csrf_token(),
             ...$this->siteItems(),
             ...$this->contentItems(),
             ...$this->userItems(),
@@ -84,7 +84,7 @@ class AdminBarController extends Controller
         return [
             'site' => [
                 ...$this->getCurrentSite()->toArray(),
-                'homeAction' => [
+                'home_action' => [
                     'name' => __('Control Panel'),
                     'url' => $startUrl,
                 ],
@@ -272,43 +272,9 @@ class AdminBarController extends Controller
 
         $entity = $entry ?? $term;
         $type = $entry ? 'entries' : 'terms';
-        $handle = $entry
-            ? $entity->collection()->handle()
-            : $entity->taxonomy()->handle();
-
-        // Optional publishing and expiration dates
+        $handle = $entry ? $entity->collection()->handle() : $entity->taxonomy()->handle();
         $publishDate = $entity->get('publish_date') ?? null;
         $expirationDate = $entity->get('expiration_date') ?? null;
-
-        $localizations = SiteFacade::all()->map(function ($site) use ($entity, $currentSite) {
-            $localized = $entity->in($site->handle());
-            $origin = $entity->locale() === $site->handle();
-
-            $url = null;
-            $editUrl = null;
-            $status = null;
-
-            if ($localized) {
-                $url = $localized->url();
-                $editUrl = $localized->editUrl();
-                $status = $localized->status();
-            } elseif (! $origin) {
-                // TODO: make this more sophisticated
-                $editUrl = $entity->editUrl();
-            }
-
-            return [
-                'site_name' => $site->name(),
-                'locale' => $site->locale(),
-                'short_locale' => substr($site->locale(), 0, 2),
-                'title' => $site->name(),
-                'url' => $url,
-                'edit_url' => $editUrl,
-                'origin' => $origin,
-                'is_current' => $site->handle() === $currentSite->handle(),
-                'status' => $status,
-            ];
-        })->values();
 
         $item = [
             'entry' => [
@@ -318,7 +284,6 @@ class AdminBarController extends Controller
                 'published' => $entity->published(),
                 'locale' => $entity->locale(),
                 'short_locale' => $entity->site()->lang(),
-                'localizations' => $localizations,
                 'publish_date' => $publishDate,
                 'expiration_date' => $expirationDate,
             ],
@@ -328,12 +293,48 @@ class AdminBarController extends Controller
             return $item;
         }
 
-        $item['entry']['editAction'] = [
+        $sites = SiteFacade::all();
+
+        if ($sites->count() > 1) {
+            $localizations = $sites->map(function ($site) use ($entity, $currentSite) {
+                $localized = $entity->in($site->handle());
+                $origin = $entity->locale() === $site->handle();
+
+                $url = null;
+                $editUrl = null;
+                $status = null;
+
+                if ($localized) {
+                    $url = $localized->url();
+                    $editUrl = $localized->editUrl();
+                    $status = $localized->status();
+                } elseif (! $origin) {
+                    // TODO: make this more sophisticated
+                    $editUrl = $entity->editUrl();
+                }
+
+                return [
+                    'site_name' => $site->name(),
+                    'locale' => $site->locale(),
+                    'short_locale' => substr($site->locale(), 0, 2),
+                    'title' => $site->name(),
+                    'url' => $url,
+                    'edit_url' => $editUrl,
+                    'origin' => $origin,
+                    'is_current' => $site->handle() === $currentSite->handle(),
+                    'status' => $status,
+                ];
+            })->values();
+
+            $item['entry']['localizations'] = $localizations;
+        }
+
+        $item['entry']['edit_action'] = [
             'name' => __('Edit'),
             'url' => $entity->editUrl(),
         ];
 
-        $item['entry']['publishAction'] = [
+        $item['entry']['publish_action'] = [
             'name' => __('Publish'),
             'url' => route('statamic.admin-bar.entry.update', $entity->id()),
             'method' => 'PUT',
@@ -348,7 +349,7 @@ class AdminBarController extends Controller
         $dark_mode = Preference::get('admin_bar_dark_mode', $statamic_theme);
 
         return [
-            'darkMode' => $dark_mode === 'dark',
+            'dark_mode' => $dark_mode === 'dark',
         ];
     }
 

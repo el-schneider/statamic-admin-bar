@@ -17,7 +17,7 @@ interface User {
     title: string
     items: Item[]
     preferences: {
-        darkMode: boolean
+        dark_mode: boolean
     }
 }
 

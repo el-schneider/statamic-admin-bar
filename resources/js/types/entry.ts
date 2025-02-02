@@ -1,29 +1,25 @@
 import type { ActionItem } from './item'
 
-interface Localization {
-    site_name: string
+interface BaseEntry {
+    id: string
+    title: string
+    status: 'published' | 'draft' | 'scheduled' | 'expired' | null
+    published: boolean
     locale: string
     short_locale: string
-    title: string
+    site_name: string
     url: string | null
     edit_url: string | null
     origin: boolean
     is_current: boolean
-    status: 'published' | 'draft' | 'scheduled' | 'expired' | null
-}
-
-interface Entry {
-    id: string
-    title: string
-    status: string
-    published: boolean
-    locale: string
-    short_locale: string
-    localizations: Localization[]
     publish_date: string | null
     expiration_date: string | null
-    editAction?: ActionItem
-    publishAction?: ActionItem
 }
 
-export type { Entry, Localization }
+type Entry = BaseEntry & {
+    edit_action?: ActionItem
+    publish_action?: ActionItem
+    localizations?: BaseEntry[]
+}
+
+export type { Entry }

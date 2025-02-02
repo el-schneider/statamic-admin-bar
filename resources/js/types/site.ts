@@ -10,7 +10,7 @@ interface Site {
     permalink: string
     direction: string
     attributes: unknown[]
-    homeAction: ActionItem
+    home_action: ActionItem
     sites: {
         name: string
         icon: string

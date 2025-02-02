@@ -2,7 +2,7 @@
     <div
         v-if="unauthorized"
         :class="[
-            preferences.darkMode && 'dark',
+            preferences.dark_mode && 'dark',
             'flex items-center justify-center bg-background text-sm text-foreground',
         ]"
     >
@@ -11,11 +11,11 @@
             <a :href="loginUrl">Login</a>
         </Button>
     </div>
-    <div v-else-if="data" :class="[preferences.darkMode && 'dark', 'contents']">
+    <div v-else-if="data" :class="[preferences.dark_mode && 'dark', 'contents']">
         <Menubar class="hidden md:flex">
             <!-- Site Actions -->
-            <Button variant="ghost" :class="data.site.homeAction.class" as-child>
-                <a :href="data.site.homeAction.url" target="_blank">
+            <Button variant="ghost" :class="data.site.home_action.class" as-child>
+                <a :href="data.site.home_action.url" target="_blank">
                     <Icon icon="mdi:home" class="h-4 w-4" />
                 </a>
             </Button>
@@ -44,17 +44,17 @@
 
             <div class="ml-auto flex items-center gap-2">
                 <!-- Current Entry Items -->
-                <template v-if="data.entry?.editAction">
+                <template v-if="data.entry?.edit_action">
                     <Button as-child variant="outline">
-                        <a :href="data.entry.editAction.url" target="_blank">
+                        <a :href="data.entry.edit_action.url" target="_blank">
                             <Icon icon="mdi:pencil" class="h-4 w-4" />
-                            {{ data.entry.editAction.name }}
+                            {{ data.entry.edit_action.name }}
                         </a>
                     </Button>
                     <EntrySwitcher :locale="data.entry.short_locale" :localizations="data.entry.localizations" />
                 </template>
 
-                <template v-if="data.entry?.publishAction">
+                <template v-if="data.entry?.publish_action">
                     <div class="flex min-w-36 items-center gap-2 text-sm">
                         <Switch :checked="data.entry.status === 'published'" @update:checked="handlePublishToggle" />
                         <StatusBadge :status="data.entry.status" />
@@ -115,7 +115,7 @@ onMounted(async () => {
             data.value = response.data as Data
             localStorage.setItem('admin-bar-user', 'true')
             document.getElementById('admin-bar')!.style.display = 'block'
-            axios.defaults.headers.common['X-CSRF-TOKEN'] = data.value.csrfToken
+            axios.defaults.headers.common['X-CSRF-TOKEN'] = data.value.csrf_token
             syncPreferences(response.data.user.preferences)
         }
     } catch (error: any) {
@@ -129,10 +129,10 @@ onMounted(async () => {
 })
 
 const handlePublishToggle = async () => {
-    if (!data.value?.entry?.publishAction) return
+    if (!data.value?.entry?.publish_action) return
 
     try {
-        const response = await axios.put(data.value.entry.publishAction.url, {
+        const response = await axios.put(data.value.entry.publish_action.url, {
             published: !data.value.entry.published,
         })
 

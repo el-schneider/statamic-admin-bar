@@ -11,7 +11,7 @@ interface Data {
         taxonomies: Tree
     }
     entry: Entry | null
-    csrfToken: string
+    csrf_token: string
     environment: string
 }
 
