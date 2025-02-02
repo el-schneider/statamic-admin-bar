@@ -293,7 +293,8 @@ class AdminBarController extends Controller
                 $editUrl = $localized->editUrl();
                 $status = $localized->status();
             } elseif (! $origin) {
-                $editUrl = cp_route('collections.entries.edit', [$entity->collection()->handle(), $entity->locale(), $entity->slug()]);
+                // TODO: make this more sophisticated
+                $editUrl = $entity->editUrl();
             }
 
             return [

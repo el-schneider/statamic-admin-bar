@@ -11,6 +11,7 @@
 - [ ] Add "position" preference
 - [ ] Add "color scheme" preference
 - [ ] Search
+- [ ] Add dialog for choosing an origin when creating a new entry
 
 ## Investigate
 
