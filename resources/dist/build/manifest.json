@@ -1,16 +1,23 @@
 {
   "resources/css/admin-bar.css": {
-    "file": "assets/admin-bar-Dg_2P_4a.css",
+    "file": "assets/admin-bar-CFSEyW5v.css",
     "src": "resources/css/admin-bar.css",
     "isEntry": true
   },
+  "resources/fonts/FamiljenGrotesk-Regular.woff2": {
+    "file": "assets/FamiljenGrotesk-Regular-BV5CHg-f.woff2",
+    "src": "resources/fonts/FamiljenGrotesk-Regular.woff2"
+  },
   "resources/js/admin-bar.ts": {
-    "file": "assets/admin-bar-tEi7pSmV.js",
+    "file": "assets/admin-bar-CB3UpLKq.js",
     "name": "admin-bar",
     "src": "resources/js/admin-bar.ts",
     "isEntry": true,
     "css": [
-      "assets/admin-bar-Dg_2P_4a.css"
+      "assets/admin-bar-CFSEyW5v.css"
+    ],
+    "assets": [
+      "assets/FamiljenGrotesk-Regular-BV5CHg-f.woff2"
     ]
   }
 }
