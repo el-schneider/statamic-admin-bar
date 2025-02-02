@@ -18,6 +18,7 @@ interface Entry {
     status: string
     published: boolean
     locale: string
+    short_locale: string
     localizations: Localization[]
     publish_date: string | null
     expiration_date: string | null

@@ -1,5 +1,5 @@
 <template>
-    <Badge size="sm" :variant="statusVariant" title="Status">{{ status }}</Badge>
+    <Badge :variant="statusVariant" title="Status">{{ status }}</Badge>
 </template>
 
 <script setup lang="ts">

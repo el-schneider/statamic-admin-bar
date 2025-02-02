@@ -45,13 +45,13 @@
             <div class="ml-auto flex items-center gap-2">
                 <!-- Current Entry Items -->
                 <template v-if="data.entry?.editAction">
-                    <Button as-child variant="ghostSuccess">
+                    <Button as-child variant="outline">
                         <a :href="data.entry.editAction.url" target="_blank">
                             <Icon icon="mdi:pencil" class="h-4 w-4" />
                             {{ data.entry.editAction.name }}
                         </a>
                     </Button>
-                    <EntrySwitcher :localizations="data.entry.localizations" />
+                    <EntrySwitcher :locale="data.entry.short_locale" :localizations="data.entry.localizations" />
                 </template>
 
                 <template v-if="data.entry?.publishAction">
@@ -61,7 +61,7 @@
                     </div>
                 </template>
 
-                <div class="flex items-center gap-2 text-sm text-muted-foreground">
+                <div class="flex items-center gap-2">
                     <Badge :variant="data.environment === 'production' ? 'success' : 'warning'" title="Environment">
                         {{ data.environment }}
                     </Badge>

@@ -316,6 +316,7 @@ class AdminBarController extends Controller
                 'status' => __($entity->status()),
                 'published' => $entity->published(),
                 'locale' => $entity->locale(),
+                'short_locale' => $entity->site()->lang(),
                 'localizations' => $localizations,
                 'publish_date' => $publishDate,
                 'expiration_date' => $expirationDate,

@@ -1,13 +1,15 @@
 <template>
     <DropdownMenu v-if="localizations?.length">
         <DropdownMenuTrigger as-child>
-            <Button variant="ghost" class="h-7 gap-1 px-2 text-xs" aria-label="Switch site">
+            <Button variant="outline" class="h-7 gap-1 px-2" aria-label="Switch site">
                 <Icon icon="mdi:circle-arrows" class="h-4 w-4" />
-                <Badge variant="outline" title="Language">de</Badge>
+                <Badge size="sm" variant="outline" class="uppercase text-muted-foreground">
+                    {{ locale }}
+                </Badge>
             </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="center">
-            <div class="flex min-w-[300px] flex-col space-y-1 p-1">
+            <div class="flex flex-col gap-2">
                 <template v-for="localization in localizations" :key="localization.site_name">
                     <div class="flex items-center justify-between space-x-2">
                         <Button
@@ -22,7 +24,7 @@
                             <span class="text-xs font-medium">
                                 {{ localization.site_name }}
                             </span>
-                            <Badge variant="outline" class="text-[10px] text-muted-foreground">
+                            <Badge size="sm" variant="outline" class="uppercase text-muted-foreground">
                                 {{ localization.short_locale }}
                             </Badge>
                             <StatusBadge :status="localization.status ?? 'missing'" />
@@ -52,6 +54,7 @@ import { Icon } from '@iconify/vue'
 import type { Entry } from '@types'
 import StatusBadge from './StatusBadge.vue'
 defineProps<{
+    locale: Entry['short_locale']
     localizations: Entry['localizations']
 }>()
 </script>
