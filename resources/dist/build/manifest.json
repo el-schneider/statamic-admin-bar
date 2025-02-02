@@ -1,0 +1,16 @@
+{
+  "resources/css/admin-bar.css": {
+    "file": "assets/admin-bar-DcfWSbSr.css",
+    "src": "resources/css/admin-bar.css",
+    "isEntry": true
+  },
+  "resources/js/admin-bar.ts": {
+    "file": "assets/admin-bar-NeXYa9Xj.js",
+    "name": "admin-bar",
+    "src": "resources/js/admin-bar.ts",
+    "isEntry": true,
+    "css": [
+      "assets/admin-bar-DcfWSbSr.css"
+    ]
+  }
+}
