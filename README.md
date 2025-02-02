@@ -1,10 +1,10 @@
-# Statamic Admin Bar Plugin
+# Statamic Admin Bar Addon
 
 > Empower your editors to manage your content from the frontend.
 
 ## Overview
 
-The Statamic Admin Bar Plugin provides an efficient way to navigate and manage your Statamic CMS content directly from your site's frontend.
+The Statamic Admin Bar Addon provides an efficient way to navigate and manage your Statamic CMS content directly from your site's frontend.
 
 ![Admin Bar](./screenshot.png)
 
@@ -20,7 +20,7 @@ The Statamic Admin Bar Plugin provides an efficient way to navigate and manage y
 
 ## Installation
 
-Install the plugin via Composer:
+Install the Addon via Composer:
 
 ```bash
 composer require el-schneider/statamic-admin-bar
@@ -34,4 +34,4 @@ Add the `admin_bar` tag to your layout, right after the closing `</head>` tag.
 
 ## Permissions
 
-The admin bar is only visible to users with the `access cp` and `view admin bar` permissions.
+The admin bar is only visible to users with the `access cp` and `view admin bar` permissions or super admins.
