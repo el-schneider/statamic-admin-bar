@@ -1,3 +1,5 @@
+> ⚠️ This addon is currently in pre-release development and not ready for production use.
+
 ![Admin Bar](./ab_github.png)
 
 # Statamic Admin Bar Addon
@@ -10,7 +12,7 @@ The Statamic Admin Bar Addon provides an efficient way to navigate and manage yo
 
 ## Key Features
 
-- **Quick Access:** Instantly reach Statamic’s collections, taxonomies, globals, and assets.
+- **Quick Access:** Instantly reach Statamic's collections, taxonomies, globals, and assets.
 - **Entry Actions:** Edit entries and toggle publish status with one click.
 - **Multi-Site & Localization:** switch between multiple sites and localized content.
 - **Light & Dark Mode:** Automatically adapt to your preferred visual theme.
