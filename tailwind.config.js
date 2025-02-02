@@ -22,6 +22,9 @@ module.exports = {
             },
         },
         extend: {
+            fontFamily: {
+                sans: ['Familjen Grotesk', 'sans-serif'],
+            },
             colors: {
                 border: 'hsl(var(--border))',
                 input: 'hsl(var(--input))',

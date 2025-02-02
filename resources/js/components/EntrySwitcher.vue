@@ -21,7 +21,7 @@
                                 !localization.url && 'hover:bg-transparent',
                             ]"
                         >
-                            <span class="text-xs font-medium">
+                            <span class="text-xs">
                                 {{ localization.site_name }}
                             </span>
                             <Badge size="sm" variant="outline" class="uppercase text-muted-foreground">

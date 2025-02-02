@@ -6,7 +6,7 @@ import { computed, type HTMLAttributes } from 'vue'
 const props = withDefaults(defineProps<MenubarContentProps & { class?: HTMLAttributes['class'] }>(), {
     align: 'start',
     alignOffset: -3,
-    sideOffset: 5,
+    sideOffset: 8,
 })
 
 const delegatedProps = computed(() => {

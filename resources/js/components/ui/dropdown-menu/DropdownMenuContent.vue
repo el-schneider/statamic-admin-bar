@@ -11,7 +11,7 @@ import { computed, type HTMLAttributes } from 'vue'
 const props = withDefaults(defineProps<DropdownMenuContentProps & { class?: HTMLAttributes['class'] }>(), {
     align: 'start',
     alignOffset: -3,
-    sideOffset: 5,
+    sideOffset: 8,
 })
 const emits = defineEmits<DropdownMenuContentEmits>()
 
