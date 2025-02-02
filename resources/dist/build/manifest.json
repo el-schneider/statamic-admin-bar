@@ -1,16 +1,16 @@
 {
   "resources/css/admin-bar.css": {
-    "file": "assets/admin-bar-DcfWSbSr.css",
+    "file": "assets/admin-bar-Dg_2P_4a.css",
     "src": "resources/css/admin-bar.css",
     "isEntry": true
   },
   "resources/js/admin-bar.ts": {
-    "file": "assets/admin-bar-NeXYa9Xj.js",
+    "file": "assets/admin-bar-Dzm0OMw1.js",
     "name": "admin-bar",
     "src": "resources/js/admin-bar.ts",
     "isEntry": true,
     "css": [
-      "assets/admin-bar-DcfWSbSr.css"
+      "assets/admin-bar-Dg_2P_4a.css"
     ]
   }
 }
