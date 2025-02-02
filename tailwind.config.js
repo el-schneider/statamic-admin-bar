@@ -5,7 +5,7 @@ module.exports = {
     darkMode: ['class'],
     safelist: ['dark'],
     prefix: '',
-
+    important: true,
     content: [
         './src/**/*.php',
         './resources/**/*.blade.php',
