@@ -1,12 +1,12 @@
+![Admin Bar](./ab_github.png)
+
 # Statamic Admin Bar Addon
 
-> Empower your editors to manage your content from the frontend.
+> Manage your Statamic content right from the frontend.
 
 ## Overview
 
 The Statamic Admin Bar Addon provides an efficient way to navigate and manage your Statamic CMS content directly from your site's frontend.
-
-![Admin Bar](./screenshot.png)
 
 ## Key Features
 
