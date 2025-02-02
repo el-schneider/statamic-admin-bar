@@ -6,7 +6,7 @@
 - [x] Add multi-site switcher
 - [ ] Refactor Menu Items to use button component
 - [ ] Add mobile menu
-- [ ] Intelligently "unhide" admin bar for previous users, based on localStorage
+- [x] Intelligently "unhide" admin bar for previous users, based on localStorage
 - [x] Admin bar to respect users language preference
 - [ ] Add "position" preference
 - [ ] Add "color scheme" preference

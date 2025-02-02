@@ -12,7 +12,7 @@
         </Button>
     </div>
     <div v-else-if="data" :class="[preferences.darkMode && 'dark', 'contents']">
-        <Menubar>
+        <Menubar class="hidden md:flex">
             <!-- Site Actions -->
             <Button variant="ghost" :class="data.site.homeAction.class" as-child>
                 <a :href="data.site.homeAction.url" target="_blank">
