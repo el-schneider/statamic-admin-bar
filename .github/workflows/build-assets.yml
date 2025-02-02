@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - "resources/**"
+      - "tailwind.config.js"
 
 jobs:
   build-dist:
