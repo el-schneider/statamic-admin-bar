@@ -4,16 +4,25 @@
 - [x] Add admin-bar preferences (by user)
   - [x] Dark mode
 - [x] Add multi-site switcher
-- [ ] DRY up shadcn components, remove unused variants
-- [ ] Add mobile menu
 - [x] Intelligently "unhide" admin bar for previous users, based on localStorage
 - [x] Admin bar to respect users language preference
-- [ ] Add "position" preference
-- [ ] Add "color scheme" preference
+
+## Fixes
+- [ ] Fix missing translations
+
+## Features
+- [ ] Add a menu for clearing caches
+- [ ] Add mobile menu
+- [ ] Add more preferences
+  - [ ] Add "color scheme"
+  - [ ] Maybe add option to hide Site Switcher (maybe there are multisites, that never have an "origin" relation)
 - [ ] Add button to hide admin bar
-- [ ] Fix missing translatio
 - [ ] Search
 - [ ] Add dialog for choosing an origin when creating a new entry
+
+## Optimizations
+- [ ] DRY up shadcn components, remove unused variants
+  - [ ] Use button component for menu items
 
 ## Investigate
 
