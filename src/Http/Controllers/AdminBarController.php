@@ -13,6 +13,7 @@ use Statamic\Facades\Taxonomy;
 use Statamic\Facades\Term;
 use Statamic\Http\Controllers\Controller;
 use Statamic\Sites\Site;
+use Statamic\Support\Str;
 
 class AdminBarController extends Controller
 {
@@ -79,7 +80,7 @@ class AdminBarController extends Controller
 
     private function siteItems()
     {
-        $startUrl = route('statamic.cp.' . config('statamic.cp.start_page'));
+        $startUrl = config('statamic.cp.route') . Str::ensureLeft(Preference::get('start_page', config('statamic.cp.start_page')), '/');
 
         return [
             'site' => [
