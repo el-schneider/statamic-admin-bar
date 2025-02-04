@@ -7,6 +7,7 @@
             "@/*": ["resources/js/*"],
             "@types/*": ["./resources/js/types/*"],
             "@types": ["./resources/js/types"]
-        }
+        },
+        "types": ["node", "vite/client"]
     }
 }
