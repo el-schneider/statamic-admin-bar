@@ -28,7 +28,7 @@ Install the Addon via Composer:
 composer require el-schneider/statamic-admin-bar
 ```
 
-Add the `admin_bar` tag to your layout, right after the closing `</head>` tag.
+Add the `admin_bar` tag to your layout, right after the opening `<body>` tag.
 
 ```antlers
 {{ admin_bar }}
@@ -37,3 +37,13 @@ Add the `admin_bar` tag to your layout, right after the closing `</head>` tag.
 ## Permissions
 
 The admin bar is only visible to users with the `access cp` and `view admin bar` permissions or super admins.
+
+## Font License Information
+
+This plugin includes the Familjen Grotesk font, which is licensed under the [SIL Open Font License, Version 1.1](http://scripts.sil.org/OFL).
+
+For detailed information about the font license, please refer to the `OFL.txt` file included in this package.
+
+### Acknowledgements
+
+We would like to extend our gratitude to the authors of the Familjen Grotesk font for their contributions, which allow us to utilize and modify this font in our plugin.
