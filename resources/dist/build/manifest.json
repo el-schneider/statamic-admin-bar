@@ -1,6 +1,6 @@
 {
   "resources/css/admin-bar.css": {
-    "file": "assets/admin-bar-CFSEyW5v.css",
+    "file": "assets/admin-bar-COc3fvb2.css",
     "src": "resources/css/admin-bar.css",
     "isEntry": true
   },
@@ -9,12 +9,12 @@
     "src": "resources/fonts/FamiljenGrotesk-Regular.woff2"
   },
   "resources/js/admin-bar.ts": {
-    "file": "assets/admin-bar-CB3UpLKq.js",
+    "file": "assets/admin-bar-CclmM2bX.js",
     "name": "admin-bar",
     "src": "resources/js/admin-bar.ts",
     "isEntry": true,
     "css": [
-      "assets/admin-bar-CFSEyW5v.css"
+      "assets/admin-bar-COc3fvb2.css"
     ],
     "assets": [
       "assets/FamiljenGrotesk-Regular-BV5CHg-f.woff2"
