@@ -9,6 +9,7 @@
 
 ## Fixes
 - [ ] Fix missing translations
+- [ ] All entries should probably link to the "filtered by site" version
 
 ## Features
 - [ ] Add a menu for clearing caches
