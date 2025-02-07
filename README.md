@@ -16,7 +16,7 @@ The Statamic Admin Bar Addon provides an efficient way to navigate and manage yo
 - **Entry Actions:** Edit entries and toggle publish status with one click.
 - **Multi-Site & Localization:** switch between multiple sites and localized content.
 - **Light & Dark Mode:** Automatically adapt to your preferred visual theme.
-- **Static/SSG Support:** Fully compatible with statically cached and SSG setups.
+- **Half/Full Measure Caching:** Fully compatible with different caching strategies.
 - **Role-Based Access Control:** give access to the admin bar to specific users or groups.
 - **Customization:** Customize the admin bar via Statamic's preferences.
 
