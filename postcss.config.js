@@ -3,6 +3,7 @@ export default {
         tailwindcss: {},
         'postcss-prefix-selector': {
             prefix: '#admin-bar',
+            exclude: ['#admin-bar'],
             transform(prefix, selector, prefixedSelector, filePath, rule) {
                 if (selector.match(/^(html|body)/)) {
                     return selector.replace(/^([^\s]*)/, `$1 ${prefix}`)
