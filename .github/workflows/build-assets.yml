@@ -5,9 +5,10 @@ on:
     branches:
       - main
     paths:
-      - "resources/**"
-      - "tailwind.config.js"
-
+      - 'resources/**'
+      - 'tailwind.config.js'
+      - 'vite.config.js'
+      - 'postcss.config.js'
 jobs:
   build-dist:
     runs-on: ubuntu-latest
@@ -28,4 +29,4 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: Build assets for distribution
-          file_pattern: "resources/dist/*"
+          file_pattern: 'resources/dist/*'

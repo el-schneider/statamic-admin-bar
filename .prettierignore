@@ -1,6 +1,3 @@
-**/*.yml
-**/*.yaml
-**/*.antlers.html
 composer.lock
 composer.json
 package-lock.json

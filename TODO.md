@@ -8,7 +8,7 @@
 - [x] Admin bar to respect users language preference
 
 ## Fixes
-- [ ] Fix missing translations
+- [x] Fix missing translations
 - [ ] All entries should probably link to the "filtered by site" version
 
 ## Features
@@ -24,6 +24,7 @@
 ## Optimizations
 - [ ] DRY up shadcn components, remove unused variants
   - [ ] Use button component for menu items
+- [ ] Exclude admin-bar from SSG setups
 
 ## Investigate
 
