@@ -121,7 +121,7 @@ class AdminBarController extends Controller
 
                 $blueprints = $this->hasPermission('create', $handle, 'entries')
                     ? $collection->entryBlueprints()->select('title', 'handle')->map(fn ($blueprint) => [
-                        'name' => 'Create ' . $blueprint['title'],
+                        'name' => __('admin-bar::strings.create_entity', ['entity' => $blueprint['title']]),
                         'url' => cp_route('collections.entries.create', [$collection, $site, 'blueprint' => $blueprint['handle']]),
                         'icon' => 'mdi:plus-circle',
                     ])
@@ -134,7 +134,7 @@ class AdminBarController extends Controller
                 }
 
                 $items = $items->push([
-                    'name' => 'All Entries',
+                    'name' => __('admin-bar::strings.all_entries'),
                     'url' => cp_route('collections.show', $collection),
                 ]);
 
@@ -166,7 +166,7 @@ class AdminBarController extends Controller
 
                 $blueprints = $this->hasPermission('create', $handle, 'terms')
                     ? $taxonomy->termBlueprints()->select('title', 'handle')->map(fn ($blueprint) => [
-                        'name' => 'Create ' . $blueprint['title'],
+                        'name' => __('admin-bar::strings.create_entity', ['entity' => $blueprint['title']]),
                         'icon' => 'mdi:plus-circle',
                         'url' => cp_route('taxonomies.terms.create', [$taxonomy, $site, 'blueprint' => $blueprint['handle']]),
                     ])
@@ -179,7 +179,7 @@ class AdminBarController extends Controller
                 }
 
                 $items = $items->push([
-                    'name' => __('All Terms'),
+                    'name' => __('admin-bar::strings.all_terms'),
                     'url' => cp_route('taxonomies.show', $taxonomy),
                 ]);
 
@@ -287,6 +287,7 @@ class AdminBarController extends Controller
                 'short_locale' => $entity->site()->lang(),
                 'publish_date' => $publishDate,
                 'expiration_date' => $expirationDate,
+                'switch_site' => __('admin-bar::strings.switch_site'),
             ],
         ];
 

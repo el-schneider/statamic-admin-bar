@@ -10,6 +10,7 @@ interface BaseEntry {
     site_name: string
     url: string | null
     edit_url: string | null
+    switch_site: string
     origin: boolean
     is_current: boolean
     publish_date: string | null

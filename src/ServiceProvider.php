@@ -20,6 +20,7 @@ class ServiceProvider extends AddonServiceProvider
 
     public function bootAddon()
     {
+        $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'admin-bar');
 
         Permission::extend(function () {
             Permission::group('admin_bar', 'Admin Bar', function () {
@@ -38,7 +39,7 @@ class ServiceProvider extends AddonServiceProvider
                     ],
                     'admin_bar_enabled' => [
                         'type' => 'toggle',
-                        'display' => __('Enabled'),
+                        'display' => __('admin-bar::strings.enabled'),
                         'width' => '25',
                         'default' => true,
                     ],

@@ -1,7 +1,7 @@
 <template>
     <DropdownMenu v-if="localizations?.length">
         <DropdownMenuTrigger as-child>
-            <Button variant="outline" class="h-7 gap-1 px-2" aria-label="Switch site">
+            <Button id="admin-bar__switcher" variant="outline" class="h-7 gap-1 px-2" :aria-label="label">
                 <Icon icon="mdi:circle-arrows" class="h-4 w-4" />
                 <Badge size="sm" variant="outline" class="uppercase text-muted-foreground">
                     {{ locale }}
@@ -54,6 +54,7 @@ import { Icon } from '@iconify/vue'
 import type { Entry } from '@types'
 import StatusBadge from './StatusBadge.vue'
 defineProps<{
+    label: Entry['switch_site']
     locale: Entry['short_locale']
     localizations: Entry['localizations']
 }>()

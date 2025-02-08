@@ -51,7 +51,11 @@
                             {{ data.entry.edit_action.name }}
                         </a>
                     </Button>
-                    <EntrySwitcher :locale="data.entry.short_locale" :localizations="data.entry.localizations" />
+                    <EntrySwitcher
+                        :label="data.entry.switch_site"
+                        :locale="data.entry.short_locale"
+                        :localizations="data.entry.localizations"
+                    />
                 </template>
 
                 <template v-if="data.entry?.publish_action">
