@@ -1,6 +1,7 @@
 <template>
     <div
         v-if="unauthorized"
+        id="admin-bar__unauthorized"
         :class="[
             preferences.dark_mode && 'dark',
             'flex items-center justify-center bg-background text-sm text-foreground',
@@ -11,10 +12,10 @@
             <a :href="loginUrl">Login</a>
         </Button>
     </div>
-    <div v-else-if="data" :class="[preferences.dark_mode && 'dark', 'contents']">
-        <Menubar class="hidden md:flex">
+    <div v-else-if="data" id="admin-bar__container" :class="[preferences.dark_mode && 'dark', 'contents']">
+        <Menubar id="admin-bar__menubar" class="hidden md:flex">
             <!-- Site Actions -->
-            <Button variant="ghost" :class="data.site.home_action.class" as-child>
+            <Button id="admin-bar__home" variant="ghost" :class="data.site.home_action.class" as-child>
                 <a :href="data.site.home_action.url" target="_blank">
                     <Icon icon="mdi:home" class="h-4 w-4" />
                 </a>
@@ -42,10 +43,10 @@
                 </template>
             </MenubarMenu>
 
-            <div class="ml-auto flex items-center gap-2">
+            <div id="admin-bar__actions" class="ml-auto flex items-center gap-2">
                 <!-- Current Entry Items -->
                 <template v-if="data.entry?.edit_action">
-                    <Button as-child variant="outline">
+                    <Button id="admin-bar__edit" as-child variant="outline">
                         <a :href="data.entry.edit_action.url" target="_blank">
                             <Icon icon="mdi:pencil" class="h-4 w-4" />
                             {{ data.entry.edit_action.name }}
@@ -59,18 +60,22 @@
                 </template>
 
                 <template v-if="data.entry?.publish_action">
-                    <div class="flex min-w-36 items-center gap-2 text-sm">
+                    <div id="admin-bar__publish" class="flex min-w-36 items-center gap-2 text-sm">
                         <Switch :checked="data.entry.status === 'published'" @update:checked="handlePublishToggle" />
                         <StatusBadge :status="data.entry.status" />
                     </div>
                 </template>
 
-                <div class="flex items-center gap-2">
-                    <Badge :variant="data.environment === 'production' ? 'success' : 'warning'" title="Environment">
+                <div id="admin-bar__meta" class="flex items-center gap-2">
+                    <Badge
+                        id="admin-bar__environment"
+                        :variant="data.environment === 'production' ? 'success' : 'warning'"
+                        title="Environment"
+                    >
                         {{ data.environment }}
                     </Badge>
                     <!-- User Menu -->
-                    <MenubarMenu>
+                    <MenubarMenu id="admin-bar__user">
                         <MenubarTrigger>
                             <Icon :icon="data.user.icon" class="h-4 w-4" />
                             {{ data.user.name }}
