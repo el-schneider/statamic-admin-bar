@@ -1,4 +1,5 @@
 const animate = require('tailwindcss-animate')
+const container = require('@tailwindcss/container-queries')
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -100,5 +101,5 @@ module.exports = {
             },
         },
     },
-    plugins: [animate],
+    plugins: [animate, container],
 }

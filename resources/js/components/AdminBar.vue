@@ -13,7 +13,7 @@
         </Button>
     </div>
     <div v-else-if="data" id="admin-bar__container" :class="[preferences.dark_mode && 'dark', 'contents']">
-        <Menubar id="admin-bar__menubar" class="hidden md:flex">
+        <Menubar id="admin-bar__menubar" class="hidden contain-layout @container sm:flex">
             <!-- Site Actions -->
             <Button id="admin-bar__home" variant="ghost" :class="data.site.home_action.class" as-child>
                 <a :href="data.site.home_action.url" target="_blank">
@@ -26,7 +26,7 @@
                 <template v-if="content.items?.length">
                     <MenubarTrigger>
                         <Icon v-if="content.icon" :icon="content.icon" class="h-4 w-4" />
-                        {{ content.name }}
+                        <span class="hidden @4xl:inline">{{ content.name }}</span>
                     </MenubarTrigger>
                     <MenubarContent>
                         <MenuTree :items="content.items" />
@@ -48,8 +48,8 @@
                 <template v-if="data.entry?.edit_action">
                     <Button id="admin-bar__edit" as-child variant="outline">
                         <a :href="data.entry.edit_action.url" target="_blank">
-                            <Icon icon="mdi:pencil" class="h-4 w-4" />
-                            {{ data.entry.edit_action.name }}
+                            <Icon icon="mdi:file-edit" class="h-4 w-4" />
+                            <span class="hidden @4xl:inline">{{ data.entry.edit_action.name }}</span>
                         </a>
                     </Button>
                     <EntrySwitcher
@@ -78,7 +78,7 @@
                     <MenubarMenu id="admin-bar__user">
                         <MenubarTrigger>
                             <Icon :icon="data.user.icon" class="h-4 w-4" />
-                            {{ data.user.name }}
+                            <span class="hidden @4xl:inline">{{ data.user.name }}</span>
                         </MenubarTrigger>
                         <MenubarContent align="end">
                             <MenuTree :items="data.user.items" />
