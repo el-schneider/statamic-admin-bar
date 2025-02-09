@@ -110,6 +110,10 @@ const loginUrl = ref('')
 
 const { preferences, syncPreferences } = usePreferences()
 
+const props = defineProps<{
+    onStateChange?: (state: string) => void
+}>()
+
 onMounted(async () => {
     try {
         const response = await axios.get<AdminBarResponse>(`/!/statamic-admin-bar`)
@@ -117,23 +121,21 @@ onMounted(async () => {
         if ('login' in response.data) {
             unauthorized.value = true
             loginUrl.value = response.data.login
+            props.onStateChange?.('unauthorized')
         } else if ('disabled' in response.data && response.data.disabled) {
             localStorage.removeItem('admin-bar-user')
             document.getElementById('admin-bar')!.style.display = 'none'
+            props.onStateChange?.('disabled')
         } else {
             data.value = response.data as Data
             localStorage.setItem('admin-bar-user', 'true')
             document.getElementById('admin-bar')!.style.display = 'block'
             axios.defaults.headers.common['X-CSRF-TOKEN'] = data.value.csrf_token
             syncPreferences(response.data.user.preferences)
+            props.onStateChange?.('loaded')
         }
     } catch (error: any) {
-        if (error.response?.status === 403 && error.response.data?.login) {
-            unauthorized.value = true
-            loginUrl.value = error.response.data.login
-        } else {
-            console.error('Failed to fetch admin bar data:', error)
-        }
+        props.onStateChange?.('error')
     }
 })
 
