@@ -10,7 +10,7 @@
 ## Fixes
 
 - [x] Fix missing translations
-- [ ] All entries should probably link to the "filtered by site" version
+- [x] 'All entries' should probably link to the "filtered by site" version
 
 ## Features
 

@@ -52,6 +52,13 @@ class AdminBarController extends Controller
         ]);
     }
 
+    private function getAllSites()
+    {
+        return Blink::once('adminBarAllSites', function () {
+            return SiteFacade::all();
+        });
+    }
+
     private function getCurrentSite(): Site
     {
         return Blink::once('adminBarCurrentSite', function () {
@@ -61,7 +68,7 @@ class AdminBarController extends Controller
             $requestHost = $parsedUrl['host'] ?? null;
             $requestPath = $parsedUrl['path'] ?? '/';
 
-            return SiteFacade::all()
+            return $this->getAllSites()
                 ->sortByDesc(fn ($site) => strlen(parse_url($site->url())['path'] ?? '/'))
                 ->first(fn ($site) => $this->siteMatchesRequest($site, $requestHost, $requestPath))
                 ?? SiteFacade::default();
@@ -140,7 +147,6 @@ class AdminBarController extends Controller
 
                 return [
                     'name' => $collection->title,
-                    'url' => cp_route('collections.show', $collection),
                     'icon' => 'mdi:folder',
                     'items' => $items->toArray(),
                 ];
@@ -295,7 +301,7 @@ class AdminBarController extends Controller
             return $item;
         }
 
-        $sites = SiteFacade::all();
+        $sites = $this->getAllSites();
 
         if ($sites->count() > 1) {
             $localizations = $sites->map(function ($site) use ($entity, $currentSite) {
