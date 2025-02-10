@@ -44,6 +44,7 @@ class AdminBarController extends Controller
             ...$this->contentItems(),
             ...$this->userItems(),
             ...$this->entryItems(),
+            ...$this->cacheItems(),
         ]);
     }
 
@@ -388,6 +389,62 @@ class AdminBarController extends Controller
                         'class' => 'text-destructive',
                     ],
                 ],
+            ],
+        ];
+    }
+
+    private function cacheItems()
+    {
+        if (! auth()->user()->can('manage cache')) {
+            return [];
+        }
+
+        $items = [
+            [
+                'name' => __('Content Stache'),
+                'icon' => 'mdi:database',
+                'url' => route('statamic.admin-bar.cache.clear', 'stache'),
+                'method' => 'POST',
+            ],
+        ];
+
+        if (config('statamic.static_caching.strategy') !== null) {
+            $items[] = [
+                'name' => __('Static Cache'),
+                'icon' => 'mdi:file-document',
+                'url' => route('statamic.admin-bar.cache.clear', 'static'),
+                'method' => 'POST',
+            ];
+        }
+
+        $items = array_merge($items, [
+            [
+                'name' => __('Application Cache'),
+                'icon' => 'mdi:application',
+                'url' => route('statamic.admin-bar.cache.clear', 'application'),
+                'method' => 'POST',
+            ],
+            [
+                'name' => __('Image Cache'),
+                'icon' => 'mdi:image',
+                'url' => route('statamic.admin-bar.cache.clear', 'image'),
+                'method' => 'POST',
+            ],
+            [
+                'name' => __('Clear All'),
+                'url' => route('statamic.admin-bar.cache.clear', 'all'),
+                'method' => 'POST',
+            ],
+        ]);
+
+        return [
+            'cache' => [
+                'name' => __('Cache'),
+                'icon' => 'mdi:trash-can-empty',
+                'urls' => [
+                    'stats' => route('statamic.admin-bar.cache.stats'),
+                ],
+                'items' => $items,
             ],
         ];
     }

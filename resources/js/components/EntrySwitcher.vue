@@ -9,15 +9,15 @@
             </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="center">
-            <div class="flex flex-col gap-2">
+            <div class="flex flex-col gap-1">
                 <template v-for="localization in localizations" :key="localization.site_name">
-                    <div class="flex items-center justify-between space-x-2">
+                    <div class="flex items-center justify-between gap-1">
                         <Button
                             :as="localization.url ? 'a' : 'div'"
                             :href="localization.url"
-                            variant="ghost"
+                            :variant="localization.url ? 'secondary' : 'ghost'"
                             :class="[
-                                'flex flex-1 items-center justify-start px-4 py-6',
+                                'flex h-9 flex-1 items-center justify-start px-4',
                                 !localization.url && 'hover:bg-transparent',
                             ]"
                         >
@@ -31,10 +31,11 @@
                         </Button>
 
                         <Button
-                            variant="ghost"
-                            class="ml-auto inline-flex h-10 w-10"
+                            variant="secondary"
+                            class="ml-auto inline-flex"
                             :href="localization.edit_url"
                             target="_blank"
+                            size="icon"
                             as="a"
                         >
                             <Icon :icon="!!localization.status ? 'mdi:pencil' : 'mdi:plus-circle'" class="h-3 w-3" />

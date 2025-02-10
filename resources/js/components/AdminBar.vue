@@ -1,4 +1,5 @@
 <template>
+    <Toaster />
     <div
         v-if="unauthorized"
         id="admin-bar__unauthorized"
@@ -63,6 +64,8 @@
                     </div>
                 </template>
 
+                <CacheMenu :cache="data.cache" />
+
                 <div id="admin-bar__meta" class="flex items-center gap-2">
                     <Badge
                         id="admin-bar__environment"
@@ -92,11 +95,15 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Menubar, MenubarContent, MenubarMenu, MenubarTrigger } from '@/components/ui/menubar'
 import { Switch } from '@/components/ui/switch'
+import Toaster from '@/components/ui/toast/Toaster.vue'
+
 import { usePreferences } from '@/lib/preferences'
 import { Icon } from '@iconify/vue'
 import type { AdminBarResponse, Data } from '@types'
 import axios, { AxiosError } from 'axios'
 import { onMounted, ref } from 'vue'
+
+import CacheMenu from './CacheMenu.vue'
 import EntrySwitcher from './EntrySwitcher.vue'
 import MenuTree from './MenuTree.vue'
 import StatusBadge from './StatusBadge.vue'
@@ -104,7 +111,6 @@ import StatusBadge from './StatusBadge.vue'
 const data = ref<Data | null>(null)
 const unauthorized = ref(false)
 const loginUrl = ref('')
-
 const { preferences, syncPreferences } = usePreferences()
 
 const props = defineProps<{
