@@ -1,11 +1,17 @@
 <template>
-    <MenubarMenu v-if="cache" id="admin-bar__cache">
-        <MenubarTrigger @mouseenter="fetchStats">
-            <Icon :icon="cache.icon" class="h-4 w-4" />
-        </MenubarTrigger>
-        <MenubarContent align="center">
-            <MenubarItem v-for="item in cache.items" :key="item.name" class="flex items-center justify-start gap-4">
-                <div class="flex min-h-10 items-center">
+    <DropdownMenu v-if="cache" id="admin-bar__cache">
+        <DropdownMenuTrigger as-child @mouseenter="fetchStats">
+            <Button variant="outline" size="icon" class="h-7 w-7">
+                <Icon :icon="cache.icon" />
+            </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="center">
+            <DropdownMenuItem
+                v-for="item in cache.items"
+                :key="item.name"
+                class="flex items-center justify-start gap-4"
+            >
+                <div class="flex items-center">
                     <Icon v-if="item.icon" :icon="item.icon" class="mr-2 h-4 w-4" />
                     <div>
                         <div>{{ item.name }}</div>
@@ -25,17 +31,17 @@
                         </div>
                     </div>
                 </div>
-                <Button class="ml-auto" size="icon" variant="secondary" @click="handleCacheAction(item)">
-                    <Icon icon="mdi:trash" class="h-4 w-4" />
+                <Button class="ml-auto" size="icon" variant="outline" @click="handleCacheAction(item)">
+                    <Icon icon="mdi:trash" />
                 </Button>
-            </MenubarItem>
-        </MenubarContent>
-    </MenubarMenu>
+            </DropdownMenuItem>
+        </DropdownMenuContent>
+    </DropdownMenu>
 </template>
 
 <script setup lang="ts">
 import { Button } from '@/components/ui/button'
-import { MenubarContent, MenubarItem, MenubarMenu, MenubarTrigger } from '@/components/ui/menubar'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { useDeferredToast } from '@/composables/useDeferredToast'
 import { Icon } from '@iconify/vue'
 import axios from 'axios'

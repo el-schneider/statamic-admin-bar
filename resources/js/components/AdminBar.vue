@@ -15,7 +15,7 @@
             <!-- Site Actions -->
             <Button id="admin-bar__home" variant="ghost" :class="data.site.home_action.class" as-child>
                 <a :href="data.site.home_action.url" target="_blank">
-                    <Icon icon="mdi:home" class="h-4 w-4" />
+                    <Icon icon="mdi:home" />
                 </a>
             </Button>
 
@@ -23,7 +23,7 @@
             <MenubarMenu v-for="content in data.content" :key="content.name">
                 <template v-if="content.items?.length">
                     <MenubarTrigger>
-                        <Icon v-if="content.icon" :icon="content.icon" class="h-4 w-4" />
+                        <Icon v-if="content.icon" :icon="content.icon" />
                         <span class="hidden @4xl:inline">{{ content.name }}</span>
                     </MenubarTrigger>
                     <MenubarContent>
@@ -34,7 +34,7 @@
                 <template v-else>
                     <Button variant="ghost" :class="content.class" as-child>
                         <a :href="content.url" target="_blank">
-                            <Icon :icon="content.icon" class="h-4 w-4" />
+                            <Icon :icon="content.icon" />
                             {{ content.name }}
                         </a>
                     </Button>
@@ -44,9 +44,9 @@
             <div id="admin-bar__actions" class="ml-auto flex items-center gap-2">
                 <!-- Current Entry Items -->
                 <template v-if="data.entry?.edit_action">
-                    <Button id="admin-bar__edit" as-child variant="outline">
+                    <Button id="admin-bar__edit" as-child variant="outline" size="icon" class="@4xl:w-auto @4xl:px-2">
                         <a :href="data.entry.edit_action.url" target="_blank">
-                            <Icon icon="mdi:file-edit" class="h-4 w-4" />
+                            <Icon icon="mdi:file-edit" />
                             <span class="hidden @4xl:inline">{{ data.entry.edit_action.name }}</span>
                         </a>
                     </Button>
@@ -77,7 +77,7 @@
                     <!-- User Menu -->
                     <MenubarMenu id="admin-bar__user">
                         <MenubarTrigger>
-                            <Icon :icon="data.user.icon" class="h-4 w-4" />
+                            <Icon :icon="data.user.icon" />
                             <span class="hidden @4xl:inline">{{ data.user.name }}</span>
                         </MenubarTrigger>
                         <MenubarContent align="end">
