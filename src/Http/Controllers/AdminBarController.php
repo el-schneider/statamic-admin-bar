@@ -19,25 +19,20 @@ class AdminBarController extends Controller
 {
     private string $path;
 
+    private AccessController $authController;
+
+    public function __construct(AccessController $authController)
+    {
+        $this->authController = $authController;
+    }
+
     public function __invoke(Request $request)
     {
         $url = $request->header('Referer') ?? $request->url();
         $this->path = parse_url($url)['path'] ?? '/';
 
-        if (! config('statamic.cp.enabled')) {
-            return response()->json([]);
-        }
-
-        if (! auth()->check()) {
-            return response()->json(['login' => route('statamic.cp.login')], 403);
-        }
-
-        if (! auth()->user()->can('access cp') || ! auth()->user()->can('view admin bar')) {
-            return response()->json(['error' => 'Unauthorized'], 403);
-        }
-
-        if (! Preference::get('admin_bar_enabled', true)) {
-            return response()->json(['disabled' => true]);
+        if (! $this->authController->canViewAdminBar()) {
+            return response()->json(['login' => $this->authController->getLoginUrl()], 403);
         }
 
         app()->setLocale(auth()->user()->preferred_locale);

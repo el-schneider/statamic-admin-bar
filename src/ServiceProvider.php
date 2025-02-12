@@ -18,6 +18,10 @@ class ServiceProvider extends AddonServiceProvider
         'actions' => __DIR__ . '/../routes/actions.php',
     ];
 
+    protected $listen = [
+        'Illuminate/Auth/Events/Login' => ['ElSchneider\StatamicAdminBar\Listeners\LoginListener'],
+    ];
+
     public function bootAddon()
     {
         $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'admin-bar');

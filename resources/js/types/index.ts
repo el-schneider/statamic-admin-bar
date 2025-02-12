@@ -6,12 +6,9 @@ import type { Tree } from './tree'
 import type { User } from './user'
 
 export type { ActionItem, Data, DividerItem, Entry, Item, Site, Tree, User }
-interface AuthRequiredResponse {
-    login: string
-}
 
 interface DisabledResponse {
     disabled: boolean
 }
 
-export type AdminBarResponse = Data | AuthRequiredResponse | DisabledResponse
+export type AdminBarResponse = Data | DisabledResponse

@@ -28,6 +28,7 @@
 - [ ] DRY up shadcn components, remove unused variants
     - [ ] Use button component for menu items
 - [ ] Exclude admin-bar from SSG setups
+- [ ] Use site name, instead of the locale, as label for the entry switcher button
 
 ## Investigate
 

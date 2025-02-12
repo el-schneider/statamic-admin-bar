@@ -2,18 +2,15 @@
     <div
         v-if="unauthorized"
         id="admin-bar__unauthorized"
-        :class="[
-            preferences.dark_mode && 'dark',
-            'flex items-center justify-center bg-background text-sm text-foreground',
-        ]"
+        class="flex h-admin-bar items-center justify-center bg-background text-sm text-foreground"
     >
-        <p>You are no longer logged in. Want to login?</p>
-        <Button variant="link" as-child>
-            <a :href="loginUrl">Login</a>
-        </Button>
+        <p>
+            You are no longer logged in. Want to
+            <Button variant="link" as-child class="px-0"><a :href="loginUrl">login</a> </Button>?
+        </p>
     </div>
-    <div v-else-if="data" id="admin-bar__container" :class="[preferences.dark_mode && 'dark', 'contents']">
-        <Menubar id="admin-bar__menubar" class="hidden contain-layout @container sm:flex">
+    <div v-else-if="data" id="admin-bar__container" class="contents">
+        <Menubar id="admin-bar__menubar" class="hidden h-admin-bar contain-layout @container sm:flex">
             <!-- Site Actions -->
             <Button id="admin-bar__home" variant="ghost" :class="data.site.home_action.class" as-child>
                 <a :href="data.site.home_action.url" target="_blank">
@@ -98,7 +95,7 @@ import { Switch } from '@/components/ui/switch'
 import { usePreferences } from '@/lib/preferences'
 import { Icon } from '@iconify/vue'
 import type { AdminBarResponse, Data } from '@types'
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 import { onMounted, ref } from 'vue'
 import EntrySwitcher from './EntrySwitcher.vue'
 import MenuTree from './MenuTree.vue'
@@ -118,23 +115,32 @@ onMounted(async () => {
     try {
         const response = await axios.get<AdminBarResponse>(`/!/statamic-admin-bar`)
 
-        if ('login' in response.data) {
-            unauthorized.value = true
-            loginUrl.value = response.data.login
-            props.onStateChange?.('unauthorized')
-        } else if ('disabled' in response.data && response.data.disabled) {
+        const rootEl = document.getElementById('admin-bar')
+
+        if ('disabled' in response.data && response.data.disabled) {
             localStorage.removeItem('admin-bar-user')
-            document.getElementById('admin-bar')!.style.display = 'none'
+            rootEl!.style.display = 'none'
             props.onStateChange?.('disabled')
         } else {
             data.value = response.data as Data
-            localStorage.setItem('admin-bar-user', 'true')
-            document.getElementById('admin-bar')!.style.display = 'block'
+            rootEl!.style.display = 'block'
             axios.defaults.headers.common['X-CSRF-TOKEN'] = data.value.csrf_token
             syncPreferences(response.data.user.preferences)
             props.onStateChange?.('loaded')
+
+            const adminBarHeight = rootEl!.dataset.adminBarHeight!
+
+            localStorage.setItem('admin-bar-height', adminBarHeight)
+            document.documentElement.style.setProperty('--admin-bar-height', adminBarHeight)
+            rootEl!.classList.add(preferences.value.dark_mode ? 'dark' : '')
         }
-    } catch (error: any) {
+    } catch (error: unknown) {
+        if (error instanceof AxiosError && error.response?.status === 403) {
+            unauthorized.value = true
+            loginUrl.value = error.response.data.login
+            props.onStateChange?.('unauthorized')
+            return
+        }
         props.onStateChange?.('error')
     }
 })

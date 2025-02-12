@@ -34,6 +34,16 @@ Add the `admin_bar` tag to your layout, right after the opening `<body>` tag.
 {{ admin_bar }}
 ```
 
+## How to use admin bar with fixed menu?
+
+For your convenience we provide a global CSS custom property `--admin-bar-height`. You can use this to offset other fixed navigations. It will only be set if the admin bar is visible.
+
+```css
+.your-fixed-nav {
+    top: var(--admin-bar-height, 0px);
+}
+```
+
 ## Permissions
 
 The admin bar is only visible to users with the `access cp` and `view admin bar` permissions or super admins.

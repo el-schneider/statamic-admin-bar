@@ -13,7 +13,7 @@ export const buttonVariants = cva(
                 secondary: 'bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80',
                 ghost: 'hover:bg-accent hover:text-accent-foreground',
                 ghostSuccess: 'hover:bg-success hover:text-success-foreground',
-                link: 'text-primary underline-offset-4 hover:underline',
+                link: 'text-primary underline hover:no-underline',
             },
             size: {
                 default: 'h-7 rounded-md px-2',

@@ -6,6 +6,10 @@
 
 @layer base {
     #admin-bar {
+        @apply bg-background text-foreground;
+    }
+
+    #admin-bar {
         --background: 0 0% 100%;
         --foreground: 240 10% 3.9%;
 
@@ -44,7 +48,7 @@
         --radius: 0.5rem;
     }
 
-    .dark {
+    #admin-bar.dark {
         --background: 240 10% 3.9%;
         --foreground: 0 0% 98%;
 
@@ -85,8 +89,5 @@
 @layer base {
     * {
         @apply border-border;
-    }
-    body {
-        @apply bg-background text-foreground;
     }
 }
