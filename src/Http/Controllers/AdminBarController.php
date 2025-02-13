@@ -399,14 +399,7 @@ class AdminBarController extends Controller
             return [];
         }
 
-        $items = [
-            [
-                'name' => __('Content Stache'),
-                'icon' => 'mdi:database',
-                'url' => route('statamic.admin-bar.cache.clear', 'stache'),
-                'method' => 'POST',
-            ],
-        ];
+        $items = [];
 
         if (config('statamic.static_caching.strategy') !== null) {
             $items[] = [
@@ -418,6 +411,12 @@ class AdminBarController extends Controller
         }
 
         $items = array_merge($items, [
+            [
+                'name' => __('Content Stache'),
+                'icon' => 'mdi:database',
+                'url' => route('statamic.admin-bar.cache.clear', 'stache'),
+                'method' => 'POST',
+            ],
             [
                 'name' => __('Application Cache'),
                 'icon' => 'mdi:application',

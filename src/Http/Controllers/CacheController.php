@@ -73,6 +73,8 @@ class CacheController extends Controller
 
     public function clear(Request $request, string $type): JsonResponse
     {
+        ray($request, $type);
+
         if ($type === 'all') {
             $this->clearStacheCache();
             $this->clearStaticCache();
@@ -81,6 +83,18 @@ class CacheController extends Controller
 
             return response()->json([
                 'message' => __('admin-bar::strings.all_caches_cleared_successfully'),
+                'stats' => $this->stats()->getData(true),
+            ]);
+        }
+
+        if ($type === 'static' && $request->has('url')) {
+
+            $cache = app(\Statamic\StaticCaching\Cacher::class);
+
+            $cache->invalidateUrl($request->get('url'));
+
+            return response()->json([
+                'message' => __('admin-bar::strings.static_cache_cleared_for_url', ['url' => $request->get('url')]),
                 'stats' => $this->stats()->getData(true),
             ]);
         }

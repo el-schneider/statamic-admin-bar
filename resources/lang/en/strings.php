@@ -8,4 +8,5 @@ return [
     'switch_site' => 'Switch site',
     'all_caches_cleared_successfully' => 'All caches cleared successfully',
     'cache_cleared_successfully' => ':type cache cleared successfully',
+    'static_cache_cleared_for_url' => 'Static cache for URL <code>:url</code> cleared successfully',
 ];

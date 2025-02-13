@@ -31,9 +31,19 @@
                         </div>
                     </div>
                 </div>
-                <Button class="ml-auto" size="icon" variant="outline" @click="handleCacheAction(item)">
-                    <Icon icon="mdi:trash" />
-                </Button>
+                <div class="ml-auto flex gap-1">
+                    <Button
+                        v-if="item.url.includes('static')"
+                        size="icon"
+                        variant="outline"
+                        @click="handleCacheAction({ ...item, current: true })"
+                    >
+                        <Icon icon="mdi:restore-from-trash" />
+                    </Button>
+                    <Button size="icon" variant="outline" @click="handleCacheAction(item)">
+                        <Icon icon="mdi:trash" />
+                    </Button>
+                </div>
             </DropdownMenuItem>
         </DropdownMenuContent>
     </DropdownMenu>
@@ -75,6 +85,7 @@ interface CacheItem {
     icon: string
     url: string
     method: string
+    current?: boolean
 }
 
 interface CacheData {
@@ -110,6 +121,7 @@ const handleCacheAction = async (item: CacheItem) => {
         const { data } = await axios({
             method: item.method.toLowerCase(),
             url: item.url,
+            params: item.current ? { url: window.location.pathname } : undefined,
         })
 
         addDeferredToast({

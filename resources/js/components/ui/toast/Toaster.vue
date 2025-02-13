@@ -18,7 +18,7 @@ const { toasts } = useToast()
                         <component :is="toast.description" />
                     </ToastDescription>
                     <ToastDescription v-else>
-                        {{ toast.description }}
+                        <div v-html="toast.description" />
                     </ToastDescription>
                 </template>
                 <ToastClose />
