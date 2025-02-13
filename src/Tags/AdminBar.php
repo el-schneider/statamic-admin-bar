@@ -43,12 +43,12 @@ class AdminBar extends Tags
         $styles = sprintf('<link rel="stylesheet" href="%s">', $vite->asset('resources/css/admin-bar.css'));
 
         // The root element, into which the admin bar is rendered
-        $rootClass = $this->canViewAndCachingDisabled() && $this->isDarkmode() ? 'dark' : '';
+        $rootClass = $this->canViewAndCachingDisabled() && $this->isDarkmode() ? 'class="dark"' : '';
         $root = <<<HTML
             <div
                 id="admin-bar"
                 data-admin-bar-height="{$adminBarHeight}"
-                class="{$rootClass}"
+                {$rootClass}
             >
                 <div></div>
             </div>
