@@ -22,6 +22,12 @@ class ServiceProvider extends AddonServiceProvider
         'Illuminate/Auth/Events/Login' => ['ElSchneider\StatamicAdminBar\Listeners\LoginListener'],
     ];
 
+    protected $middlewareGroups = [
+        'web' => [
+            \ElSchneider\StatamicAdminBar\Http\Middleware\SetAdminBarLocale::class,
+        ],
+    ];
+
     public function bootAddon()
     {
         $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'admin-bar');

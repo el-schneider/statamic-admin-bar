@@ -17,7 +17,10 @@
                             <Badge size="sm" variant="outline" class="uppercase text-muted-foreground">
                                 {{ localization.short_locale }}
                             </Badge>
-                            <StatusBadge :status="localization.status ?? 'missing'" />
+                            <StatusBadge
+                                :status="localization.status ?? 'missing'"
+                                :label="localization.localized_status"
+                            />
                         </div>
 
                         <div class="ml-auto flex gap-1">

@@ -60,7 +60,7 @@
                 <template v-if="data.entry?.publish_action">
                     <div id="admin-bar__publish" class="flex min-w-36 items-center gap-2 text-sm">
                         <Switch :checked="data.entry.status === 'published'" @update:checked="handlePublishToggle" />
-                        <StatusBadge :status="data.entry.status" />
+                        <StatusBadge :status="data.entry.status" :label="data.entry.localized_status" />
                     </div>
                 </template>
 

@@ -73,8 +73,6 @@ class CacheController extends Controller
 
     public function clear(Request $request, string $type): JsonResponse
     {
-        ray($request, $type);
-
         if ($type === 'all') {
             $this->clearStacheCache();
             $this->clearStaticCache();

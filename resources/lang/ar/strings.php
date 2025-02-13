@@ -9,4 +9,5 @@ return [
     'all_caches_cleared_successfully' => 'تم مسح جميع ذاكرة التخزين المؤقت بنجاح',
     'cache_cleared_successfully' => 'تم مسح ذاكرة التخزين المؤقت :type بنجاح',
     'static_cache_cleared_for_url' => 'تم مسح ذاكرة التخزين المؤقت الثابتة للرابط <code>:url</code> بنجاح',
+    'missing' => 'مفقود',
 ];

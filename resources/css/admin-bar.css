@@ -90,4 +90,8 @@
     * {
         @apply border-border;
     }
+
+    code {
+        @apply mx-1 rounded-sm bg-primary px-1 py-0.5 text-xs text-primary-foreground;
+    }
 }
