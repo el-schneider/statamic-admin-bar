@@ -1,5 +1,5 @@
 <template>
-    <Badge :variant="statusVariant" title="Status">{{ status }}</Badge>
+    <Badge v-if="status" :variant="statusVariant" :title="label">{{ label ?? status }}</Badge>
 </template>
 
 <script setup lang="ts">
@@ -9,7 +9,11 @@ import { computed } from 'vue'
 const props = defineProps({
     status: {
         type: String,
-        required: true,
+        default: undefined,
+    },
+    label: {
+        type: String,
+        default: undefined,
     },
 })
 

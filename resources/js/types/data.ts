@@ -1,3 +1,4 @@
+import type { Cache } from './cache'
 import type { Entry } from './entry'
 import type { Site } from './site'
 import type { Tree } from './tree'
@@ -13,6 +14,7 @@ interface Data {
     entry: Entry | null
     csrf_token: string
     environment: string
+    cache: Cache
 }
 
 export type { Data }

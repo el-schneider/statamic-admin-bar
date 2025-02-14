@@ -35,8 +35,6 @@ class AdminBarController extends Controller
             return response()->json(['login' => $this->authController->getLoginUrl()], 403);
         }
 
-        app()->setLocale(auth()->user()->preferred_locale);
-
         return response()->json([
             'environment' => config('app.env'),
             'csrf_token' => csrf_token(),
@@ -44,6 +42,7 @@ class AdminBarController extends Controller
             ...$this->contentItems(),
             ...$this->userItems(),
             ...$this->entryItems(),
+            ...$this->cacheItems(),
         ]);
     }
 
@@ -282,7 +281,8 @@ class AdminBarController extends Controller
             'entry' => [
                 'id' => $entity->id(),
                 'title' => $entity->get('title'),
-                'status' => __($entity->status()),
+                'status' => $entity->status(),
+                'localized_status' => __(ucfirst($entity->status())),
                 'published' => $entity->published(),
                 'locale' => $entity->locale(),
                 'short_locale' => $entity->site()->lang(),
@@ -305,7 +305,7 @@ class AdminBarController extends Controller
 
                 $url = null;
                 $editUrl = null;
-                $status = null;
+                $status = 'missing';
 
                 if ($localized) {
                     $url = $localized->url();
@@ -326,6 +326,7 @@ class AdminBarController extends Controller
                     'origin' => $origin,
                     'is_current' => $site->handle() === $currentSite->handle(),
                     'status' => $status,
+                    'localized_status' => $status === 'missing' ? __('admin-bar::strings.missing') : __(ucfirst($status)),
                 ];
             })->values();
 
@@ -388,6 +389,61 @@ class AdminBarController extends Controller
                         'class' => 'text-destructive',
                     ],
                 ],
+            ],
+        ];
+    }
+
+    private function cacheItems()
+    {
+        if (! auth()->user()->can('manage cache')) {
+            return [];
+        }
+
+        $items = [];
+
+        if (config('statamic.static_caching.strategy') !== null) {
+            $items[] = [
+                'name' => __('Static Page Cache'),
+                'icon' => 'mdi:file-document',
+                'url' => route('statamic.admin-bar.cache.clear', 'static'),
+                'method' => 'POST',
+            ];
+        }
+
+        $items = array_merge($items, [
+            [
+                'name' => __('Content Stache'),
+                'icon' => 'mdi:database',
+                'url' => route('statamic.admin-bar.cache.clear', 'stache'),
+                'method' => 'POST',
+            ],
+            [
+                'name' => __('Application Cache'),
+                'icon' => 'mdi:application',
+                'url' => route('statamic.admin-bar.cache.clear', 'application'),
+                'method' => 'POST',
+            ],
+            [
+                'name' => __('Image Cache'),
+                'icon' => 'mdi:image',
+                'url' => route('statamic.admin-bar.cache.clear', 'image'),
+                'method' => 'POST',
+            ],
+            [
+                'name' => __('Clear All'),
+                'url' => route('statamic.admin-bar.cache.clear', 'all'),
+                'method' => 'POST',
+            ],
+        ]);
+
+        return [
+            'cache' => [
+                'name' => __('Cache'),
+                'icon' => 'mdi:trash-can-empty',
+                'urls' => [
+                    'stats' => route('statamic.admin-bar.cache.stats'),
+                ],
+                'items' => $items,
             ],
         ];
     }

@@ -70,7 +70,7 @@
         --secondary: 240 3.7% 15.9%;
         --secondary-foreground: 0 0% 98%;
 
-        --accent: 240 3.7% 5.9%;
+        --accent: 240 3.7% 25.9%;
         --accent-foreground: 0 0% 98%;
 
         --success: 120 100% 75%;
@@ -89,5 +89,9 @@
 @layer base {
     * {
         @apply border-border;
+    }
+
+    code {
+        @apply mx-1 rounded-sm bg-primary px-1 py-0.5 text-xs text-primary-foreground;
     }
 }

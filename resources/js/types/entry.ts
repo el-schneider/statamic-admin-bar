@@ -3,7 +3,8 @@ import type { ActionItem } from './item'
 interface BaseEntry {
     id: string
     title: string
-    status: 'published' | 'draft' | 'scheduled' | 'expired' | null
+    status?: 'published' | 'draft' | 'scheduled' | 'expired'
+    localized_status?: string
     published: boolean
     locale: string
     short_locale: string
