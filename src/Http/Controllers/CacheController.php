@@ -15,12 +15,7 @@ class CacheController extends Controller
 {
     public function stats(): JsonResponse
     {
-        return response()->json([
-            'stache' => $this->getStacheStats(),
-            'cache' => $this->getApplicationCacheStats(),
-            'static' => $this->getStaticCacheStats(),
-            'images' => $this->getImageCacheStats(),
-        ]);
+        return response()->json($this->formattedStats());
     }
 
     protected function getStacheStats(): array
@@ -81,7 +76,7 @@ class CacheController extends Controller
 
             return response()->json([
                 'message' => __('admin-bar::strings.all_caches_cleared_successfully'),
-                'stats' => $this->stats()->getData(true),
+                'stats' => $this->formattedStats(),
             ]);
         }
 
@@ -93,7 +88,7 @@ class CacheController extends Controller
 
             return response()->json([
                 'message' => __('admin-bar::strings.static_cache_cleared_for_url', ['url' => $request->get('url')]),
-                'stats' => $this->stats()->getData(true),
+                'stats' => $this->formattedStats(),
             ]);
         }
 
@@ -107,7 +102,7 @@ class CacheController extends Controller
 
         return response()->json([
             'message' => ucfirst(__('admin-bar::strings.cache_cleared_successfully', ['type' => $type])),
-            'stats' => $this->stats()->getData(true),
+            'stats' => $this->formattedStats(),
         ]);
     }
 
@@ -129,5 +124,30 @@ class CacheController extends Controller
     protected function clearImageCache(): void
     {
         Artisan::call('statamic:glide:clear');
+    }
+
+    public function formattedStats(): array
+    {
+        $stache = $this->getStacheStats();
+        $static = $this->getStaticCacheStats();
+        $images = $this->getImageCacheStats();
+        $appCache = $this->getApplicationCacheStats();
+
+        return [
+            'stache' => trans_choice('admin-bar::strings.stache_cache_stats', $stache['records'], [
+                'records' => $stache['records'],
+                'size' => $stache['size'] ?? '0 B',
+            ]),
+            'static' => trans_choice('admin-bar::strings.static_cache_stats', $static['count'], [
+                'count' => $static['count'],
+            ]),
+            'images' => trans_choice('admin-bar::strings.image_cache_stats', $images['count'], [
+                'count' => $images['count'],
+                'size' => $images['size'] ?? '0 B',
+            ]),
+            'cache' => __('admin-bar::strings.application_cache_stats', [
+                'driver' => ucfirst($appCache['driver']),
+            ]),
+        ];
     }
 }

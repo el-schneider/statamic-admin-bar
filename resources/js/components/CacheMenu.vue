@@ -17,16 +17,16 @@
                         <div>{{ item.name }}</div>
                         <div v-if="stats" class="text-xs text-muted-foreground">
                             <template v-if="item.url.includes('stache')">
-                                {{ stats.stache.records }} records, {{ stats.stache.size }}
+                                {{ stats.stache }}
                             </template>
                             <template v-else-if="item.url.includes('static')">
-                                {{ stats.static.count }} pages cached
+                                {{ stats.static }}
                             </template>
                             <template v-else-if="item.url.includes('image')">
-                                {{ stats.images.count }} files, {{ stats.images.size }}
+                                {{ stats.images }}
                             </template>
                             <template v-else-if="item.url.includes('application')">
-                                Driver: {{ stats.cache.driver }}
+                                {{ stats.cache }}
                             </template>
                         </div>
                     </div>
@@ -53,62 +53,25 @@
 import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { useDeferredToast } from '@/composables/useDeferredToast'
+import type { Cache, CacheItem, FormattedCacheStats } from '@/types/cache'
 import { Icon } from '@iconify/vue'
 import axios from 'axios'
 import { ref } from 'vue'
 
 const { addDeferredToast } = useDeferredToast()
 
-interface CacheStats {
-    stache: {
-        records: number
-        size: string
-        time: string
-        rebuilt: string
-    }
-    cache: {
-        driver: string
-    }
-    static: {
-        enabled: boolean
-        strategy: string
-        count: number
-    }
-    images: {
-        count: number
-        size: string
-    }
-}
-
-interface CacheItem {
-    name: string
-    icon: string
-    url: string
-    method: string
-    current?: boolean
-}
-
-interface CacheData {
-    name: string
-    icon: string
-    urls: {
-        stats: string
-    }
-    items: CacheItem[]
-}
-
 const props = defineProps<{
-    cache?: CacheData
+    cache?: Cache
 }>()
 
-const stats = ref<CacheStats | null>(null)
+const stats = ref<FormattedCacheStats | null>(null)
 const hasFetchedStats = ref(false)
 
 const fetchStats = async () => {
     if (!props.cache?.urls.stats || hasFetchedStats.value) return
 
     try {
-        const { data } = await axios.get<CacheStats>(props.cache.urls.stats)
+        const { data } = await axios.get<FormattedCacheStats>(props.cache.urls.stats)
         stats.value = data
         hasFetchedStats.value = true
     } catch (error) {
