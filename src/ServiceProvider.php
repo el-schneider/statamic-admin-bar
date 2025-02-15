@@ -4,6 +4,7 @@ namespace ElSchneider\StatamicAdminBar;
 
 use ElSchneider\StatamicAdminBar\Http\Controllers\AdminBarController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
 use Statamic\Facades\Permission;
 use Statamic\Facades\Preference;
 use Statamic\Providers\AddonServiceProvider;
@@ -31,6 +32,27 @@ class ServiceProvider extends AddonServiceProvider
     public function bootAddon()
     {
         $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'admin-bar');
+
+        Str::macro('initials', function (string $string): string {
+            $string = trim($string);
+            if (empty($string)) {
+                return 'AA';
+            }
+
+            // Get first letter
+            $initials = strtoupper($string[0]);
+
+            // Try to get second letter from word boundaries
+            preg_match_all('/\s+(\w)/', $string, $matches);
+            if (! empty($matches[1])) {
+                $initials .= strtoupper($matches[1][0]);
+            } else {
+                // If no word boundaries, either use second letter or duplicate first
+                $initials .= isset($string[1]) ? strtoupper($string[1]) : $initials;
+            }
+
+            return $initials;
+        });
 
         Permission::extend(function () {
             Permission::group('admin_bar', 'Admin Bar', function () {
@@ -63,6 +85,17 @@ class ServiceProvider extends AddonServiceProvider
                             'auto' => __('Auto'),
                             'light' => __('Light'),
                             'dark' => __('Dark'),
+                        ],
+                    ],
+                    'admin_bar_site_label' => [
+                        'type' => 'button_group',
+                        'display' => __('Short Site Label'),
+                        'instructions' => __('What to show as a short site label.'),
+                        'width' => '50',
+                        'default' => 'locale',
+                        'options' => [
+                            'locale' => __('Locale'),
+                            'name' => __('Name'),
                         ],
                     ],
                 ],

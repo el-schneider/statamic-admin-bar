@@ -43,30 +43,13 @@
 
             <div id="admin-bar__actions" class="ml-auto flex items-center gap-2">
                 <!-- Current Entry Items -->
-                <template v-if="data.entry?.edit_action">
-                    <Button id="admin-bar__edit" as-child variant="outline" size="icon" class="@4xl:w-auto @4xl:px-2">
-                        <a :href="data.entry.edit_action.url" target="_blank">
-                            <Icon icon="mdi:file-edit" />
-                            <span class="hidden @4xl:inline">{{ data.entry.edit_action.name }}</span>
-                        </a>
-                    </Button>
-                    <EntrySwitcher
-                        :label="data.entry.switch_site"
-                        :locale="data.entry.short_locale"
-                        :localizations="data.entry.localizations"
-                    />
+                <template v-if="data.entry">
+                    <EntryActions :entry="data.entry" />
                 </template>
-
-                <template v-if="data.entry?.publish_action">
-                    <div id="admin-bar__publish" class="flex min-w-36 items-center gap-2 text-sm">
-                        <Switch :checked="data.entry.status === 'published'" @update:checked="handlePublishToggle" />
-                        <StatusBadge :status="data.entry.status" :label="data.entry.localized_status" />
-                    </div>
-                </template>
-
-                <CacheMenu :cache="data.cache" />
 
                 <div id="admin-bar__meta" class="flex items-center gap-2">
+                    <!-- Site Meta -->
+                    <CacheMenu :cache="data.cache" />
                     <Badge
                         id="admin-bar__environment"
                         :variant="data.environment === 'production' ? 'success' : 'warning'"
@@ -74,11 +57,12 @@
                     >
                         {{ data.environment }}
                     </Badge>
+
                     <!-- User Menu -->
                     <MenubarMenu id="admin-bar__user">
                         <MenubarTrigger>
                             <Icon :icon="data.user.icon" />
-                            <span class="hidden @4xl:inline">{{ data.user.name }}</span>
+                            <span class="hidden @4xl:inline">{{ data.user.initials }}</span>
                         </MenubarTrigger>
                         <MenubarContent align="end">
                             <MenuTree :items="data.user.items" />
@@ -94,7 +78,6 @@
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Menubar, MenubarContent, MenubarMenu, MenubarTrigger } from '@/components/ui/menubar'
-import { Switch } from '@/components/ui/switch'
 import Toaster from '@/components/ui/toast/Toaster.vue'
 
 import { usePreferences } from '@/lib/preferences'
@@ -104,9 +87,8 @@ import axios, { AxiosError } from 'axios'
 import { onMounted, ref } from 'vue'
 
 import CacheMenu from './CacheMenu.vue'
-import EntrySwitcher from './EntrySwitcher.vue'
+import EntryActions from './EntryActions.vue'
 import MenuTree from './MenuTree.vue'
-import StatusBadge from './StatusBadge.vue'
 
 const data = ref<Data | null>(null)
 const unauthorized = ref(false)
@@ -150,21 +132,4 @@ onMounted(async () => {
         props.onStateChange?.('error')
     }
 })
-
-const handlePublishToggle = async () => {
-    if (!data.value?.entry?.publish_action) return
-
-    try {
-        const response = await axios.put(data.value.entry.publish_action.url, {
-            published: !data.value.entry.published,
-        })
-
-        if (data.value?.entry) {
-            data.value.entry.published = response.data.data.published
-            window.location.reload()
-        }
-    } catch (error) {
-        console.error('Failed to toggle publish state:', error)
-    }
-}
 </script>

@@ -10,17 +10,20 @@ interface BaseEntry {
     short_locale: string
     site_name: string
     url: string | null
-    edit_url: string | null
     switch_site: string
-    origin: boolean
+    is_origin: boolean
     is_current: boolean
     publish_date: string | null
     expiration_date: string | null
+    edit_action?: ActionItem
+    update_action?: ActionItem
 }
 
-type Entry = BaseEntry & {
-    edit_action?: ActionItem
-    publish_action?: ActionItem
+type Entry = {
+    switch_site_label: string
+    short_site_label?: string
+    short_locale: string
+    localized_status: string
     localizations?: BaseEntry[]
 }
 

@@ -274,75 +274,77 @@ class AdminBarController extends Controller
         $entity = $entry ?? $term;
         $type = $entry ? 'entries' : 'terms';
         $handle = $entry ? $entity->collection()->handle() : $entity->taxonomy()->handle();
-        $publishDate = $entity->get('publish_date') ?? null;
-        $expirationDate = $entity->get('expiration_date') ?? null;
+        $status = $entity->status();
 
         $item = [
             'entry' => [
-                'id' => $entity->id(),
-                'title' => $entity->get('title'),
-                'status' => $entity->status(),
-                'localized_status' => __(ucfirst($entity->status())),
-                'published' => $entity->published(),
-                'locale' => $entity->locale(),
-                'short_locale' => $entity->site()->lang(),
-                'publish_date' => $publishDate,
-                'expiration_date' => $expirationDate,
-                'switch_site' => __('admin-bar::strings.switch_site'),
+                'switch_site_label' => __('admin-bar::strings.switch_site'),
+                'short_site_label' => Preference::get('admin_bar_site_label', 'locale') === 'name' ? Str::initials($this->getCurrentSite()->name()) : null,
+                'localized_status' => $status === 'missing' ? __('admin-bar::strings.missing') : __(ucfirst($status)),
+                'short_locale' => $this->getCurrentSite()->shortLocale(),
             ],
         ];
 
-        if (! $this->hasPermission('edit', $handle, $type)) {
-            return $item;
-        }
-
         $sites = $this->getAllSites();
 
-        if ($sites->count() > 1) {
-            $localizations = $sites->map(function ($site) use ($entity, $currentSite) {
-                $localized = $entity->in($site->handle());
-                $origin = $entity->locale() === $site->handle();
+        $item['entry']['localizations'] = $sites->map(function ($site) use ($entity, $currentSite, $handle, $type) {
+            $localized = $entity->in($site->handle());
+            $origin = $entity?->origin() ?? $entity;
+            $is_origin = $localized?->id === $origin?->id;
 
-                $url = null;
-                $editUrl = null;
-                $status = 'missing';
+            $siteData = [
+                'title' => $site->name,
+                'locale' => $site->locale,
+                'site_name' => $site->name,
+                'short_locale' => $site->shortLocale,
+                'is_current' => $site->handle === $currentSite->handle,
+                'is_origin' => $is_origin,
+            ];
 
-                if ($localized) {
-                    $url = $localized->url();
-                    $editUrl = $localized->editUrl();
-                    $status = $localized->status();
-                } elseif (! $origin) {
-                    // TODO: make this more sophisticated
-                    $editUrl = $entity->editUrl();
+            if ($localized) {
+                $localizedData = [
+                    'url' => $localized->url,
+                    'status' => $localized->status,
+                    'published' => $localized->published,
+                    'publish_date' => $localized->publish_date,
+                    'expiration_date' => $localized->expiration_date,
+                    'localized_status' => __(ucfirst($localized->status)),
+                ];
+
+                if ($this->hasPermission('edit', $handle, $type)) {
+                    $localizedData['edit_action'] = [
+                        'name' => __('Edit'),
+                        'url' => $localized->editUrl(),
+                    ];
+
+                    $localizedData['update_action'] = [
+                        'name' => __('Update'),
+                        'url' => route('statamic.admin-bar.entry.update', $localized->id()),
+                        'method' => 'PUT',
+                    ];
                 }
 
                 return [
-                    'site_name' => $site->name(),
-                    'locale' => $site->locale(),
-                    'short_locale' => substr($site->locale(), 0, 2),
-                    'title' => $site->name(),
-                    'url' => $url,
-                    'edit_url' => $editUrl,
-                    'origin' => $origin,
-                    'is_current' => $site->handle() === $currentSite->handle(),
-                    'status' => $status,
-                    'localized_status' => $status === 'missing' ? __('admin-bar::strings.missing') : __(ucfirst($status)),
+                    ...$siteData,
+                    ...$localizedData,
                 ];
-            })->values();
+            } elseif (! $is_origin) {
+                $siteData['status'] = 'missing';
+                $siteData['localized_status'] = __('admin-bar::strings.missing');
 
-            $item['entry']['localizations'] = $localizations;
-        }
+                // TODO: make this more sophisticated
+                if ($this->hasPermission('edit', $handle, $type)) {
+                    $editAction = [
+                        'name' => __('Edit'),
+                        'url' => $entity->editUrl(),
+                    ];
 
-        $item['entry']['edit_action'] = [
-            'name' => __('Edit'),
-            'url' => $entity->editUrl(),
-        ];
+                    $siteData['edit_action'] = $editAction;
+                }
+            }
 
-        $item['entry']['publish_action'] = [
-            'name' => __('Publish'),
-            'url' => route('statamic.admin-bar.entry.update', $entity->id()),
-            'method' => 'PUT',
-        ];
+            return $siteData;
+        })->values();
 
         return $item;
     }
