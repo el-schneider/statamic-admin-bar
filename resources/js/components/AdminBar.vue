@@ -72,10 +72,10 @@
                     <!-- User Menu -->
                     <MenubarMenu id="admin-bar__user">
                         <MenubarTrigger>
-                            <Icon :icon="data.user.icon" />
+                            <Icon icon="mdi:account" />
                             <span class="hidden @4xl:inline">{{ data.user.initials }}</span>
                         </MenubarTrigger>
-                        <MenubarContent align="end">
+                        <MenubarContent v-if="data.user.items?.length" align="end">
                             <MenuTree :items="data.user.items" />
                         </MenubarContent>
                     </MenubarMenu>

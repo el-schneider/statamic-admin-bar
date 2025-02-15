@@ -49,7 +49,7 @@ class AdminBarController extends Controller
     private function getAllSites()
     {
         return Blink::once('adminBarAllSites', function () {
-            return SiteFacade::all();
+            return SiteFacade::authorized();
         });
     }
 
@@ -81,7 +81,7 @@ class AdminBarController extends Controller
 
     private function siteItems()
     {
-        $startUrl = config('statamic.cp.route') . Str::ensureLeft(Preference::get('start_page', config('statamic.cp.start_page')), '/');
+        $startUrl = config('statamic.cp.route').Str::ensureLeft(Preference::get('start_page', config('statamic.cp.start_page')), '/');
 
         return [
             'site' => [
@@ -361,18 +361,13 @@ class AdminBarController extends Controller
 
     private function userItems()
     {
-        $user = auth()->user()->toArray();
-        $editUrl = $user['edit_url'];
-
-        unset($user['edit_url']);
+        $user = auth()->user();
 
         $preferences = $this->getPreferences();
 
         return [
             'user' => [
-                ...$user,
-                'initials' => Str::initials($user['name']),
-                'icon' => 'mdi:account',
+                'initials' => Str::initials($user->name),
                 'preferences' => $preferences,
                 'items' => [
                     [
@@ -382,7 +377,7 @@ class AdminBarController extends Controller
                     ],
                     [
                         'name' => __('Edit User'),
-                        'url' => $editUrl,
+                        'url' => $user->editUrl(),
                         'icon' => 'mdi:account-edit',
                     ],
                     [
