@@ -11,9 +11,9 @@
         </p>
     </div>
     <div v-else-if="data" id="admin-bar__container" class="contents">
-        <Menubar id="admin-bar__menubar" class="hidden h-admin-bar contain-layout @container sm:flex">
+        <Menubar id="admin-bar__menubar" class="flex h-admin-bar contain-layout @container">
             <!-- Site Actions -->
-            <Button id="admin-bar__home" variant="ghost" :class="data.site.home_action.class" as-child>
+            <Button id="admin-bar__home" variant="ghost" size="icon" class="@4xl:w-auto @4xl:px-2" as-child>
                 <a :href="data.site.home_action.url" target="_blank">
                     <Icon icon="mdi:home" />
                 </a>
@@ -56,7 +56,9 @@
                             :variant="data.environment === 'production' ? 'success' : 'warning'"
                             title="Environment"
                         >
-                            {{ data.environment }}
+                            <span class="max-w-8 truncate @xl:max-w-none">{{
+                                capitalizeFirstLetter(data.environment)
+                            }}</span>
                         </Badge>
                         <Badge
                             v-if="data.entry?.localizations?.length === 1"
@@ -95,6 +97,7 @@ import type { AdminBarResponse, Data } from '@types'
 import axios, { AxiosError } from 'axios'
 import { onMounted, ref } from 'vue'
 
+import { capitalizeFirstLetter } from '@/lib/utils'
 import CacheMenu from './CacheMenu.vue'
 import EntryActions from './EntryActions.vue'
 import MenuTree from './MenuTree.vue'

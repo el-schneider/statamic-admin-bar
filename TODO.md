@@ -12,12 +12,12 @@
 - [x] Fix missing translations
 - [x] 'All entries' should probably link to the "filtered by site" version
 - [ ] Fully test "entries" features with terms
-- [ ] Fully test and implement "scheduled" and "expired" entries
+- [x] Fully test and implement "scheduled" and "expired" entries
 
 ## Features
 
 - [x] Add a menu for clearing caches
-- [ ] Add mobile menu
+- [x] Add mobile menu
 - [ ] Add more preferences
     - [ ] Add "color scheme"
     - [ ] Maybe add option to hide Site Switcher (maybe there are multisites, that never have an "origin" relation)
@@ -30,9 +30,10 @@
 - [ ] DRY up shadcn components, remove unused variants
     - [ ] Use button component for menu items
 - [x] Exclude admin-bar from SSG setups
-- [ ] Use site name, instead of the locale, as label for the entry switcher button
+- [x] Use site name, instead of the locale, as label for the entry switcher button
 - [ ] Add tooltips and/or aria-labels
 - [ ] Translate preferences instructions
+- [ ] Lazy-load admin bar after checking permissions
 
 ## Investigate
 

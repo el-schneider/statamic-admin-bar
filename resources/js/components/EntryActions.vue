@@ -16,21 +16,27 @@
 
     <!-- Entry Switcher -->
     <EntrySwitcher v-if="(entry?.localizations?.length ?? 1) > 1" :localizations="entry.localizations">
-        <Button id="admin-bar__switcher" variant="outline" class="h-7 gap-1 px-2" :aria-label="entry.switch_site_label">
+        <Button
+            id="admin-bar__switcher"
+            variant="outline"
+            size="icon"
+            class="@4xl:w-auto @4xl:px-2"
+            :aria-label="entry.switch_site_label"
+        >
             <Icon icon="mdi:circle-arrows" />
             <template v-if="entry.short_site_label">
                 {{ entry.short_site_label }}
             </template>
-            <Badge v-else size="sm" variant="outline" class="uppercase text-muted-foreground">
+            <Badge v-else size="sm" variant="outline" class="hidden uppercase text-muted-foreground @4xl:flex">
                 {{ entry.short_locale }}
             </Badge>
         </Button>
     </EntrySwitcher>
 
     <!-- Publish Toggle -->
-    <div v-if="current?.update_action" id="admin-bar__publish" class="flex min-w-32 items-center gap-2 text-sm">
+    <div v-if="current?.update_action" id="admin-bar__publish" class="flex items-center gap-2 text-sm @xl:min-w-32">
         <Switch :checked="current?.published" @update:checked="handlePublishToggle" />
-        <StatusBadge :status="current?.status" :label="current?.localized_status" />
+        <StatusBadge class="hidden @xl:flex" :status="current?.status" :label="current?.localized_status" />
     </div>
     <StatusBadge v-else :status="current?.status" :label="current?.localized_status" />
 </template>

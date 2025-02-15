@@ -16,7 +16,7 @@ const forwardedProps = useForwardProps(delegatedProps)
 </script>
 
 <template>
-    <Button variant="ghost" v-bind="forwardedProps" as-child>
+    <Button variant="ghost" size="icon" class="@4xl:w-auto @4xl:px-2" v-bind="forwardedProps" as-child>
         <MenubarTrigger>
             <slot />
         </MenubarTrigger>
