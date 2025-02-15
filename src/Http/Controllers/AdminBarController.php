@@ -371,6 +371,7 @@ class AdminBarController extends Controller
         return [
             'user' => [
                 ...$user,
+                'initials' => Str::initials($user['name']),
                 'icon' => 'mdi:account',
                 'preferences' => $preferences,
                 'items' => [

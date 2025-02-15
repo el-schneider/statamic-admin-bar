@@ -21,7 +21,7 @@ const statusVariant = computed(() => {
     const variants = {
         published: 'success',
         draft: 'warning',
-        scheduled: 'warningOutline',
+        scheduled: 'successOutline',
         expired: 'destructiveOutline',
         missing: 'destructiveOutline',
     } as const

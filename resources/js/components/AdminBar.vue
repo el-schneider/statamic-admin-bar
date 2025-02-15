@@ -50,13 +50,22 @@
                 <div id="admin-bar__meta" class="flex items-center gap-2">
                     <!-- Site Meta -->
                     <CacheMenu :cache="data.cache" />
-                    <Badge
-                        id="admin-bar__environment"
-                        :variant="data.environment === 'production' ? 'success' : 'warning'"
-                        title="Environment"
-                    >
-                        {{ data.environment }}
-                    </Badge>
+                    <div class="flex gap-1">
+                        <Badge
+                            id="admin-bar__environment"
+                            :variant="data.environment === 'production' ? 'success' : 'warning'"
+                            title="Environment"
+                        >
+                            {{ data.environment }}
+                        </Badge>
+                        <Badge
+                            v-if="data.entry?.localizations?.length === 1"
+                            variant="outline"
+                            class="uppercase text-muted-foreground"
+                        >
+                            {{ data.entry.short_locale }}
+                        </Badge>
+                    </div>
 
                     <!-- User Menu -->
                     <MenubarMenu id="admin-bar__user">

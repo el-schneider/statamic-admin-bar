@@ -1,8 +1,9 @@
 <template>
     <DropdownMenu v-if="cache" id="admin-bar__cache">
-        <DropdownMenuTrigger as-child @mouseenter="fetchStats">
+        <DropdownMenuTrigger as-child class="@4xl:w-auto @4xl:px-2" @mouseenter="fetchStats">
             <Button variant="outline" size="icon" class="h-7 w-7">
                 <Icon :icon="cache.icon" />
+                <span class="hidden @4xl:inline">{{ cache.name }}</span>
             </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="center">
@@ -12,7 +13,7 @@
                 class="flex items-center justify-start gap-4"
             >
                 <div class="flex items-center">
-                    <Icon v-if="item.icon" :icon="item.icon" class="mr-2 h-4 w-4" />
+                    <Icon v-if="item.icon" :icon="item.icon" class="mr-1 h-4 w-4" />
                     <div>
                         <div>{{ item.name }}</div>
                         <div v-if="stats" class="text-xs text-muted-foreground">

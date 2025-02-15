@@ -15,7 +15,7 @@
     </Button>
 
     <!-- Entry Switcher -->
-    <EntrySwitcher v-if="entry?.localizations?.length" :localizations="entry.localizations">
+    <EntrySwitcher v-if="(entry?.localizations?.length ?? 1) > 1" :localizations="entry.localizations">
         <Button id="admin-bar__switcher" variant="outline" class="h-7 gap-1 px-2" :aria-label="entry.switch_site_label">
             <Icon icon="mdi:circle-arrows" />
             <template v-if="entry.short_site_label">
@@ -32,6 +32,7 @@
         <Switch :checked="current?.published" @update:checked="handlePublishToggle" />
         <StatusBadge :status="current?.status" :label="current?.localized_status" />
     </div>
+    <StatusBadge v-else :status="current?.status" :label="current?.localized_status" />
 </template>
 
 <script setup lang="ts">
