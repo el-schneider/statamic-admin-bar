@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.2.0 - 2025-02-16
+
+### What's fixed
+
+- Already logged in user can't see admin bar
+
+**Full Changelog**: https://github.com/el-schneider/statamic-admin-bar/compare/v0.1.9...v0.2.0
+
 ## v0.1.9 - 2025-02-16
 
 ### What's fixed
