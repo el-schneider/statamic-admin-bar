@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.1.9 - 2025-02-16
+
+### What's fixed
+
+- an errounous `ray()` call
+- formatting
+  **Full Changelog**: https://github.com/el-schneider/statamic-admin-bar/compare/v0.1.8...v0.1.9
+
 ## v0.1.8 - 2025-02-16
 
 #### What's new
