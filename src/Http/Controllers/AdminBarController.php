@@ -81,7 +81,7 @@ class AdminBarController extends Controller
 
     private function siteItems()
     {
-        $startUrl = config('statamic.cp.route').Str::ensureLeft(Preference::get('start_page', config('statamic.cp.start_page')), '/');
+        $startUrl = config('statamic.cp.route') . Str::ensureLeft(Preference::get('start_page', config('statamic.cp.start_page')), '/');
 
         return [
             'site' => [
@@ -263,9 +263,9 @@ class AdminBarController extends Controller
 
     private function entryItems()
     {
-        $entry = Entry::query()->where('url', $this->path)->first();
-        $term = Term::findByUri($this->path);
         $currentSite = $this->getCurrentSite();
+        $entry = Entry::query()->where('url', $this->path)->first();
+        $term = Term::query()->where('url', $this->path)->first();
 
         if (! $entry && ! $term) {
             return ['entry' => null];
@@ -274,6 +274,8 @@ class AdminBarController extends Controller
         $entity = $entry ?? $term;
         $type = $entry ? 'entries' : 'terms';
         $handle = $entry ? $entity->collection()->handle() : $entity->taxonomy()->handle();
+        $collection = $entry ? $entity->collection() : null;
+        $taxonomy = ! $entry ? $entity->taxonomy() : null;
         $status = $entity->status();
 
         $item = [
@@ -285,12 +287,23 @@ class AdminBarController extends Controller
             ],
         ];
 
-        $sites = $this->getAllSites();
+        $sites = $this->getAllSites()
+            ->when(isset($collection), function ($sites) use ($collection) {
+                return $sites->filter(fn ($site) => $collection->sites()->contains($site->handle()));
+            })
+            ->when(isset($taxonomy), function ($sites) use ($taxonomy) {
+                return $sites->filter(fn ($site) => $taxonomy->sites()->contains($site->handle()));
+            });
+
+        if ($sites->isEmpty()) {
+            return $item;
+        }
 
         $item['entry']['localizations'] = $sites->map(function ($site) use ($entity, $currentSite, $handle, $type) {
             $localized = $entity->in($site->handle());
             $origin = $entity?->origin() ?? $entity;
-            $is_origin = $localized?->id === $origin?->id;
+            // locale helps differentiate between different terms, as their id's look like this: 'tags::delightful'
+            $is_origin = $localized?->locale . $localized?->id === $origin?->locale . $origin?->id;
 
             $siteData = [
                 'title' => $site->name,
