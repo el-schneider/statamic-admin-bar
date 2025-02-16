@@ -2,3 +2,4 @@ composer.lock
 composer.json
 package-lock.json
 /resources/dist
+CHANGELOG.md
