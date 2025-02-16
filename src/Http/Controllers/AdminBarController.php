@@ -378,8 +378,6 @@ class AdminBarController extends Controller
     {
         $user = auth()->user();
 
-        ray($user->toArray());
-
         $preferences = $this->getPreferences();
 
         return [
