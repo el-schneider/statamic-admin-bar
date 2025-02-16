@@ -25,8 +25,8 @@ class AdminBar extends Tags
      */
     public function index(): string
     {
-        // Don't render anything if static caching is disabled and user can't view admin bar
-        if ($this->isStaticCachingDisabled() && ! $this->authController->hasAdminBarAccess()) {
+        // Don't render anything if static caching is disabled and user can't and never could view admin bar
+        if ($this->isStaticCachingDisabled() && ! $this->authController->hasHadAdminBarAccess() && ! $this->authController->canViewAdminBar()) {
             return '';
         }
 

@@ -24,9 +24,9 @@ class AccessController extends Controller
         return Preference::get('admin_bar_enabled', true);
     }
 
-    public function hasAdminBarAccess(): bool
+    public function hasHadAdminBarAccess(): bool
     {
-        return request()->cookie('has_admin_bar_access') !== null;
+        return request()->cookie('has_had_admin_bar_access') !== null;
     }
 
     public function getLoginUrl(): string
