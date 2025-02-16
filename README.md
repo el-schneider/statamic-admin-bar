@@ -14,6 +14,7 @@ The Statamic Admin Bar Addon provides an efficient way to navigate and manage yo
 
 - **Quick Access:** Instantly reach Statamic's collections, taxonomies, globals, and assets.
 - **Entry Actions:** Edit entries and toggle publish status with one click.
+- **Cache Control:** Clear the various caches from the admin bar.
 - **Multi-Site & Localization:** switch between multiple sites and localized content.
 - **Light & Dark Mode:** Automatically adapt to your preferred visual theme.
 - **Half/Full Measure Caching:** Fully compatible with different caching strategies.
