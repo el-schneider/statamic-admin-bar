@@ -6,10 +6,7 @@
         <DropdownMenuContent align="center">
             <div class="flex flex-col gap-1">
                 <template v-for="localization in localizations" :key="localization.site_name">
-                    <DropdownMenuItem
-                        class="flex items-center justify-between gap-4"
-                        :class="localization.is_current && 'bg-accent text-accent-foreground'"
-                    >
+                    <DropdownMenuItem :class="localization.is_current && 'bg-accent text-accent-foreground'">
                         <div class="flex items-center gap-2">
                             <div>
                                 {{ localization.site_name }}
@@ -17,10 +14,7 @@
                             <Badge size="sm" variant="outline" class="uppercase text-muted-foreground">
                                 {{ localization.short_locale }}
                             </Badge>
-                            <StatusBadge
-                                :status="localization.status ?? 'missing'"
-                                :label="localization.localized_status"
-                            />
+                            <StatusBadge :status="localization.status" :label="localization.localized_status" />
                         </div>
 
                         <div class="ml-auto flex gap-1">
@@ -43,7 +37,7 @@
                                 target="_blank"
                                 as="a"
                             >
-                                <Icon :icon="!!localization.status ? 'mdi:pencil' : 'mdi:plus-circle'" />
+                                <Icon :icon="localization.status === 'missing' ? 'mdi:plus-circle' : 'mdi:pencil'" />
                             </Button>
                         </div>
                     </DropdownMenuItem>

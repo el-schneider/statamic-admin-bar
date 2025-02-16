@@ -11,7 +11,7 @@
 
 - [x] Fix missing translations
 - [x] 'All entries' should probably link to the "filtered by site" version
-- [ ] Fully test "entries" features with terms
+- [x] Fully test "entries" features with terms
 - [x] Fully test and implement "scheduled" and "expired" entries
 
 ## Features

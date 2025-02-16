@@ -7,12 +7,8 @@
             </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="center">
-            <DropdownMenuItem
-                v-for="item in cache.items"
-                :key="item.name"
-                class="flex items-center justify-start gap-4"
-            >
-                <div class="flex items-center">
+            <DropdownMenuItem v-for="item in cache.items" :key="item.name">
+                <div class="flex items-center gap-1">
                     <Icon v-if="item.icon" :icon="item.icon" class="mr-1 h-4 w-4" />
                     <div>
                         <div>{{ item.name }}</div>
@@ -41,7 +37,7 @@
                     >
                         <Icon icon="mdi:restore-from-trash" />
                     </Button>
-                    <Button size="icon" variant="outline" @click="handleCacheAction(item)">
+                    <Button size="icon" variant="destructiveOutline" @click="handleCacheAction(item)">
                         <Icon icon="mdi:trash" />
                     </Button>
                 </div>

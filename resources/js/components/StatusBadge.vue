@@ -4,17 +4,15 @@
 
 <script setup lang="ts">
 import { Badge } from '@/components/ui/badge'
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 
-const props = defineProps({
-    status: {
-        type: String,
-        default: undefined,
-    },
-    label: {
-        type: String,
-        default: undefined,
-    },
+const props = defineProps<{
+    status?: string | null
+    label?: string | null
+}>()
+
+onMounted(() => {
+    console.log(props)
 })
 
 const statusVariant = computed(() => {

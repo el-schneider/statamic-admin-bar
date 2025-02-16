@@ -34,7 +34,11 @@
     </EntrySwitcher>
 
     <!-- Publish Toggle -->
-    <div v-if="current?.update_action" id="admin-bar__publish" class="flex items-center gap-2 text-sm @xl:min-w-32">
+    <div
+        v-if="current?.update_action && entry.type === 'entry'"
+        id="admin-bar__publish"
+        class="flex items-center gap-2 text-sm @xl:min-w-32"
+    >
         <Switch :checked="current?.published" @update:checked="handlePublishToggle" />
         <StatusBadge class="hidden @xl:flex" :status="current?.status" :label="current?.localized_status" />
     </div>

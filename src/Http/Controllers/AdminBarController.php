@@ -272,7 +272,8 @@ class AdminBarController extends Controller
         }
 
         $entity = $entry ?? $term;
-        $type = $entry ? 'entries' : 'terms';
+        $type = $entry ? 'entry' : 'term';
+        $typePlural = $entry ? 'entries' : 'terms';
         $handle = $entry ? $entity->collection()->handle() : $entity->taxonomy()->handle();
         $collection = $entry ? $entity->collection() : null;
         $taxonomy = ! $entry ? $entity->taxonomy() : null;
@@ -284,6 +285,7 @@ class AdminBarController extends Controller
                 'short_site_label' => Preference::get('admin_bar_site_label', 'locale') === 'name' ? Str::initials($this->getCurrentSite()->name()) : null,
                 'localized_status' => $status === 'missing' ? __('admin-bar::strings.missing') : __(ucfirst($status)),
                 'short_locale' => $this->getCurrentSite()->shortLocale(),
+                'type' => $type,
             ],
         ];
 
@@ -299,7 +301,7 @@ class AdminBarController extends Controller
             return $item;
         }
 
-        $item['entry']['localizations'] = $sites->map(function ($site) use ($entity, $currentSite, $handle, $type) {
+        $item['entry']['localizations'] = $sites->map(function ($site) use ($entity, $currentSite, $handle, $typePlural) {
             $localized = $entity->in($site->handle());
             $origin = $entity?->origin() ?? $entity;
             // locale helps differentiate between different terms, as their id's look like this: 'tags::delightful'
@@ -321,10 +323,10 @@ class AdminBarController extends Controller
                     'published' => $localized->published,
                     'publish_date' => $localized->publish_date,
                     'expiration_date' => $localized->expiration_date,
-                    'localized_status' => __(ucfirst($localized->status)),
+                    'localized_status' => $localized->status ? __(ucfirst($localized->status)) : null,
                 ];
 
-                if ($this->hasPermission('edit', $handle, $type)) {
+                if ($this->hasPermission('edit', $handle, $typePlural)) {
                     $localizedData['edit_action'] = [
                         'name' => __('Edit'),
                         'url' => $localized->editUrl(),
@@ -346,7 +348,7 @@ class AdminBarController extends Controller
                 $siteData['localized_status'] = __('admin-bar::strings.missing');
 
                 // TODO: make this more sophisticated
-                if ($this->hasPermission('edit', $handle, $type)) {
+                if ($this->hasPermission('edit', $handle, $typePlural)) {
                     $editAction = [
                         'name' => __('Edit'),
                         'url' => $entity->editUrl(),
