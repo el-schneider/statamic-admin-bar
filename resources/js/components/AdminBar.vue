@@ -70,15 +70,7 @@
                     </div>
 
                     <!-- User Menu -->
-                    <MenubarMenu id="admin-bar__user">
-                        <MenubarTrigger>
-                            <Icon icon="mdi:account" />
-                            <span class="hidden @4xl:inline">{{ data.user.initials }}</span>
-                        </MenubarTrigger>
-                        <MenubarContent v-if="data.user.items?.length" align="end">
-                            <MenuTree :items="data.user.items" />
-                        </MenubarContent>
-                    </MenubarMenu>
+                    <UserMenu :user="data.user" />
                 </div>
             </div>
         </Menubar>
@@ -101,6 +93,7 @@ import { capitalizeFirstLetter } from '@/lib/utils'
 import CacheMenu from './CacheMenu.vue'
 import EntryActions from './EntryActions.vue'
 import MenuTree from './MenuTree.vue'
+import UserMenu from './UserMenu.vue'
 
 const data = ref<Data | null>(null)
 const unauthorized = ref(false)

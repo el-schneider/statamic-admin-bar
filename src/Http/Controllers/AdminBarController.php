@@ -378,11 +378,20 @@ class AdminBarController extends Controller
     {
         $user = auth()->user();
 
+        ray($user->toArray());
+
         $preferences = $this->getPreferences();
 
         return [
             'user' => [
                 'initials' => Str::initials($user->name),
+                'email' => $user->email,
+                'avatar' => $user->avatar?->permalink,
+                'roles' => $user->roles()->pluck('title'),
+                'groups' => $user->groups()->pluck('title'),
+                'roles_label' => __('Roles'),
+                'groups_label' => __('Groups'),
+                'is_super' => $user->super,
                 'preferences' => $preferences,
                 'items' => [
                     [

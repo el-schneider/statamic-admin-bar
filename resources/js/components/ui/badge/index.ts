@@ -18,8 +18,8 @@ export const badgeVariants = cva(
                 warningOutline: 'border border-warning text-warning-foreground',
             },
             size: {
-                sm: 'px-1.5 text-xs text-[10px] ',
-                default: 'px-2.5 py-0.5 text-xs',
+                sm: 'px-1 text-xs text-[10px] ',
+                default: 'px-2 py-0.5 text-xs',
             },
         },
         defaultVariants: {

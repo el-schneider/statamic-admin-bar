@@ -24,6 +24,7 @@
 - [ ] Add button to hide admin bar
 - [ ] Search
 - [ ] Add dialog for choosing an origin when creating a new entry
+- [ ] Allow impersonations (with a "leave impersonation" button) from the user menu
 
 ## Optimizations
 
