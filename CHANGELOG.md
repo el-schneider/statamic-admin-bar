@@ -14,11 +14,12 @@
 
 - an errounous `ray()` call
 - formatting
-  **Full Changelog**: https://github.com/el-schneider/statamic-admin-bar/compare/v0.1.8...v0.1.9
+
+**Full Changelog**: https://github.com/el-schneider/statamic-admin-bar/compare/v0.1.8...v0.1.9
 
 ## v0.1.8 - 2025-02-16
 
-#### What's new
+### What's new
 
 - User metadata in user menu
 - Refined cache menu styling
@@ -29,7 +30,6 @@
 - Site switcher now only shows items
   - for which user has authorization
   - which are enabled in the respective taxonomy/collection
-  
 
 **Full Changelog**: https://github.com/el-schneider/statamic-admin-bar/compare/v0.1.7...v0.1.8
 
