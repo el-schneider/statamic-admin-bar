@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.2.1 - 2025-06-05
+
+### What's fixed
+
+- accessing the avatar url no longer yields an error
+
+**Full Changelog**: https://github.com/el-schneider/statamic-admin-bar/compare/v0.2.0...v0.2.1
+
 ## v0.2.0 - 2025-02-16
 
 ### What's fixed
@@ -30,6 +38,7 @@
 - Site switcher now only shows items
   - for which user has authorization
   - which are enabled in the respective taxonomy/collection
+  
 
 **Full Changelog**: https://github.com/el-schneider/statamic-admin-bar/compare/v0.1.7...v0.1.8
 
