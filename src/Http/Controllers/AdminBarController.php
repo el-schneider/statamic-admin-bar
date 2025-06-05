@@ -384,7 +384,7 @@ class AdminBarController extends Controller
             'user' => [
                 'initials' => Str::initials($user->name),
                 'email' => $user->email,
-                'avatar' => $user->avatar?->permalink,
+                'avatar' => $user->avatar,
                 'roles' => $user->roles()->pluck('title'),
                 'groups' => $user->groups()->pluck('title'),
                 'roles_label' => __('Roles'),
