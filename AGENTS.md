@@ -62,10 +62,10 @@ Husky runs checks on commit. Do not bypass it.
 
 Both sandboxes symlink this addon. Changes to addon files are immediately reflected.
 
-| Sandbox | URL | Statamic Version |
-|---------|-----|------------------|
-| v5 | `http://statamic-admin-bar-test.test` | v5 |
-| v6 | `http://statamic-admin-bar-test-v6.test` | v6 |
+| Sandbox | URL                                      | Statamic Version |
+| ------- | ---------------------------------------- | ---------------- |
+| v5      | `http://statamic-admin-bar-test.test`    | v5               |
+| v6      | `http://statamic-admin-bar-test-v6.test` | v6               |
 
 **Credentials:**
 
