@@ -1,5 +1,24 @@
 # Changelog
 
+## v0.3.1 - 2026-02-05
+
+### Security
+
+- Fix 8 npm security vulnerabilities (1 critical, 2 high, 4 moderate, 1 low):
+  - **Critical:** `form-data` unsafe random function for boundary generation
+  - **High:** `axios` SSRF/credential leakage and DoS via missing data size check
+  - **High:** `glob` CLI command injection
+  - **Moderate:** `esbuild`/`vite` dev server cross-origin request vulnerability
+  - **Moderate:** `js-yaml` prototype pollution in merge
+  - **Moderate:** `lodash` prototype pollution in `_.unset` and `_.omit`
+  - **Low:** `brace-expansion` ReDoS
+  
+
+### Dependencies
+
+- Update all npm packages to latest versions within semver ranges
+- Rebuild production assets
+
 ## v0.3.0 - 2026-02-05
 
 ### What's new
