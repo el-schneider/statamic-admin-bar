@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.3.0 - 2026-02-05
+
+### What's new
+
+- Statamic v6 support — the addon now works with both Statamic v5 and v6
+
+**Full Changelog**: https://github.com/el-schneider/statamic-admin-bar/compare/v0.2.1...v0.3.0
+
 ## v0.2.1 - 2025-06-05
 
 ### What's fixed
