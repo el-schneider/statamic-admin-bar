@@ -3,6 +3,7 @@
 namespace ElSchneider\StatamicAdminBar\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Statamic\Facades\AssetContainer;
 use Statamic\Facades\Blink;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
@@ -223,7 +224,7 @@ class AdminBarController extends Controller
 
     private function assetsItems()
     {
-        $containers = \Statamic\Facades\AssetContainer::all()
+        $containers = AssetContainer::all()
             ->filter(fn ($container) => $this->hasPermission('view', $container->handle(), 'assets'));
 
         if ($containers->isEmpty()) {

@@ -9,6 +9,7 @@ use League\Glide\Server;
 use Statamic\Facades\Stache;
 use Statamic\Facades\StaticCache;
 use Statamic\Http\Controllers\Controller;
+use Statamic\StaticCaching\Cacher;
 use Statamic\Support\Str;
 
 class CacheController extends Controller
@@ -82,7 +83,7 @@ class CacheController extends Controller
 
         if ($type === 'static' && $request->has('url')) {
 
-            $cache = app(\Statamic\StaticCaching\Cacher::class);
+            $cache = app(Cacher::class);
 
             $cache->invalidateUrl($request->get('url'));
 

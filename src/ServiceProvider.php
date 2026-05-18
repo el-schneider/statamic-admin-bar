@@ -3,6 +3,7 @@
 namespace ElSchneider\StatamicAdminBar;
 
 use ElSchneider\StatamicAdminBar\Http\Controllers\AdminBarController;
+use ElSchneider\StatamicAdminBar\Http\Middleware\SetAdminBarLocale;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use Statamic\Facades\Permission;
@@ -25,7 +26,7 @@ class ServiceProvider extends AddonServiceProvider
 
     protected $middlewareGroups = [
         'web' => [
-            \ElSchneider\StatamicAdminBar\Http\Middleware\SetAdminBarLocale::class,
+            SetAdminBarLocale::class,
         ],
     ];
 
