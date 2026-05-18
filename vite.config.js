@@ -4,6 +4,7 @@ import path from 'path'
 import { defineConfig } from 'vite'
 
 export default defineConfig({
+    base: '/vendor/statamic-admin-bar/build/',
     plugins: [
         laravel({
             input: ['resources/js/admin-bar.ts', 'resources/css/admin-bar.css'],
