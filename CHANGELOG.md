@@ -1,5 +1,18 @@
 # Changelog
 
+## v0.3.3 - 2026-11-02
+
+### Security
+
+- Update bundled Axios to 1.20 for its published advisories (prototype pollution gadgets, header injection, proxy handling).
+- Update Vue to 3.5.44.
+
+### Maintenance
+
+- Refresh npm and Composer dev dependencies and resolve the Composer lock against PHP 8.2.
+- Drop the unused `orchestra/testbench` dev dependency.
+- Rebuild assets when npm dependencies change; skip Husky hooks in the CI asset build.
+
 ## v0.3.1 - 2026-02-05
 
 ### Security
