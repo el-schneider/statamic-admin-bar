@@ -1,6 +1,7 @@
 name: Build assets for distribution
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
