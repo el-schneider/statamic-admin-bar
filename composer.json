@@ -14,12 +14,14 @@
         "statamic/cms": "^5.0 || ^6.0"
     },
     "require-dev": {
-        "orchestra/testbench": "^9.0",
         "laravel/pint": "^1.20"
     },
     "config": {
         "allow-plugins": {
             "pixelfear/composer-dist-plugin": true
+        },
+        "platform": {
+            "php": "8.2.0"
         }
     },
     "extra": {
