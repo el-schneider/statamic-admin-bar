@@ -9,6 +9,8 @@ on:
       - 'tailwind.config.js'
       - 'vite.config.js'
       - 'postcss.config.js'
+      - 'package.json'
+      - 'package-lock.json'
 jobs:
   build-dist:
     runs-on: ubuntu-latest
